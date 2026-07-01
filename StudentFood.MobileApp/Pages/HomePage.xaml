@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StudentFood.MobileApp.Models"
+             x:Class="StudentFood.MobileApp.Pages.HomePage"
+             x:Name="ThisPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Trang chủ">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="20,24,20,36"
+                                 Spacing="20">
+              <Border BackgroundColor="White"
+                   StrokeThickness="0"
+                   StrokeShape="RoundRectangle 22"
+                   Padding="18">
+                  <VerticalStackLayout Spacing="4">
+                   <Label Text="{Binding GreetingText}"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       FontFamily="RobotoBold"
+                       TextColor="#1F1B16" />
+                   <Label Text="Sẵn sàng ăn ngon trước khi vào lớp chưa?"
+                       FontSize="14"
+                       FontFamily="Roboto"
+                       TextColor="#8A847E" />
+                  </VerticalStackLayout>
+              </Border>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Món ngon bán chạy"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           FontFamily="RobotoBold"
+                           TextColor="#1F1B16" />
+                    <Label Grid.Column="1"
+                           Text="Xem tất cả"
+                           FontSize="13"
+                           FontFamily="RobotoBold"
+                           TextColor="#FF8A00"
+                           FontAttributes="Bold" />
+                </Grid>
+
+                <!-- Trending Foods Custom Layout (1 Large, 2 Small) -->
+                <VerticalStackLayout Spacing="14">
+                    <!-- Large Item (Item 0) -->
+                    <Border BindingContext="{Binding TrendingFood1}"
+                            Padding="12"
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 22">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FoodTappedCommand}" CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="112,*"
+                              ColumnSpacing="14">
+                            <Border StrokeThickness="0"
+                                    BackgroundColor="#EFE7DE"
+                                    StrokeShape="RoundRectangle 18"
+                                    HeightRequest="112"
+                                    WidthRequest="112">
+                                <Image Source="{Binding FullImageUrl}"
+                                       Aspect="AspectFill" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="6"
+                                                 VerticalOptions="Center">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding Name}"
+                                           FontAttributes="Bold"
+                                           FontFamily="RobotoBold"
+                                           FontSize="18"
+                                           TextColor="#1F1B16" />
+                                </Grid>
+                                <Label Text="{Binding CanteenName}"
+                                       FontSize="13"
+                                       FontFamily="Roboto"
+                                       TextColor="#8A847E" />
+                                <HorizontalStackLayout Spacing="4">
+                                    <Label Text="★"
+                                           TextColor="#FFB020"
+                                           FontSize="14" />
+                                    <Label Text="{Binding AverageRating, StringFormat='{0:F1}'}"
+                                           FontSize="13"
+                                           FontFamily="Roboto"
+                                           TextColor="#8A847E" />
+                                </HorizontalStackLayout>
+                                <Grid ColumnDefinitions="*,Auto"
+                                      Margin="0,6,0,0">
+                                    <Label Text="{Binding DisplayPrice}"
+                                           FontSize="22"
+                                           FontAttributes="Bold"
+                                           FontFamily="RobotoBold"
+                                           TextColor="#FF8A00" />
+                                    <Border Grid.Column="1"
+                                            BackgroundColor="#FF8A00"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 16"
+                                            HeightRequest="32"
+                                            WidthRequest="32"
+                                            Padding="0">
+                                        <Label Text="+"
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!-- Two Small Items Side by Side -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+                        <!-- Item 2 -->
+                        <Border Grid.Column="0"
+                                BindingContext="{Binding TrendingFood2}"
+                                Padding="12"
+                                BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 22">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FoodTappedCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="8">
+                                <Grid>
+                                    <Border StrokeThickness="0"
+                                            BackgroundColor="#EFE7DE"
+                                            StrokeShape="RoundRectangle 18"
+                                            HeightRequest="120"
+                                            HorizontalOptions="Fill">
+                                        <Image Source="{Binding FullImageUrl}"
+                                               Aspect="AspectFill" />
+                                    </Border>
+                                </Grid>
+
+                                <Label Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                       FontFamily="RobotoBold"
+                                       FontSize="15"
+                                       TextColor="#1F1B16"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding CanteenName}"
+                                       FontSize="12"
+                                       FontFamily="Roboto"
+                                       TextColor="#8A847E"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation" />
+                                
+                                <Grid ColumnDefinitions="*,Auto" VerticalOptions="End">
+                                    <Label Text="{Binding DisplayPrice}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           FontFamily="RobotoBold"
+                                           TextColor="#FF8A00" />
+                                    <Border Grid.Column="1"
+                                            BackgroundColor="#FF8A00"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 14"
+                                            HeightRequest="28"
+                                            WidthRequest="28"
+                                            Padding="0">
+                                        <Label Text="+"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Item 3 -->
+                        <Border Grid.Column="1"
+                                BindingContext="{Binding TrendingFood3}"
+                                Padding="12"
+                                BackgroundColor="White"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 22">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FoodTappedCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="8">
+                                <Grid>
+                                    <Border StrokeThickness="0"
+                                            BackgroundColor="#EFE7DE"
+                                            StrokeShape="RoundRectangle 18"
+                                            HeightRequest="120"
+                                            HorizontalOptions="Fill">
+                                        <Image Source="{Binding FullImageUrl}"
+                                               Aspect="AspectFill" />
+                                    </Border>
+                                </Grid>
+
+                                <Label Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                       FontFamily="RobotoBold"
+                                       FontSize="15"
+                                       TextColor="#1F1B16"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding CanteenName}"
+                                       FontSize="12"
+                                       FontFamily="Roboto"
+                                       TextColor="#8A847E"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation" />
+                                
+                                <Grid ColumnDefinitions="*,Auto" VerticalOptions="End">
+                                    <Label Text="{Binding DisplayPrice}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"
+                                           FontFamily="RobotoBold"
+                                           TextColor="#FF8A00" />
+                                    <Border Grid.Column="1"
+                                            BackgroundColor="#FF8A00"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 14"
+                                            HeightRequest="28"
+                                            WidthRequest="28"
+                                            Padding="0">
+                                        <Label Text="+"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+
+                <Label Text="Đề xuất cho bạn"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       FontFamily="RobotoBold"
+                       TextColor="#1F1B16" />
+
+                <CollectionView ItemsSource="{Binding RecommendedFoods}"
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:FoodItem">
+                            <Border Margin="0,0,0,12"
+                                    Padding="12"
+                                    BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FoodTappedCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="68,*,Auto"
+                                      ColumnSpacing="12"
+                                      VerticalOptions="Center">
+                                    <Border StrokeThickness="0"
+                                            BackgroundColor="#EFE7DE"
+                                            StrokeShape="RoundRectangle 14"
+                                            HeightRequest="68"
+                                            WidthRequest="68">
+                                        <Image Source="{Binding FullImageUrl}"
+                                               Aspect="AspectFill" />
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Spacing="4"
+                                                         VerticalOptions="Center">
+                                        <Label Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               FontFamily="RobotoBold"
+                                               TextColor="#1F1B16" />
+                                        <Label Text="{Binding CanteenName}"
+                                               FontSize="13"
+                                               FontFamily="Roboto"
+                                               TextColor="#8A847E" />
+                                        <Label Text="{Binding DisplayPrice}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               FontFamily="RobotoBold"
+                                               TextColor="#FF8A00" />
+                                    </VerticalStackLayout>
+
+                                    <Border Grid.Column="2"
+                                            Padding="8,4"
+                                            BackgroundColor="#F7F3EE"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10"
+                                            VerticalOptions="Center">
+                                        <HorizontalStackLayout Spacing="4">
+                                            <Label Text="★"
+                                                   TextColor="#FFB020"
+                                                   FontSize="13" />
+                                            <Label Text="{Binding AverageRating, StringFormat='{0:F1}'}"
+                                                   FontSize="13"
+                                                   FontFamily="Roboto"
+                                                   TextColor="#5B5147" />
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.ProfilePage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Tài khoản">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,52,20,32" Spacing="20">
+
+            <!-- Profile Card -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="24">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <!-- Avatar -->
+                    <Border BackgroundColor="#FF8A00"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 999"
+                            HeightRequest="64"
+                            WidthRequest="64"
+                            VerticalOptions="Center">
+                        <Label Text="{Binding AvatarInitial}"
+                               FontFamily="RobotoBold"
+                               FontSize="26"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+                    <!-- Name & Phone -->
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                        <Label Text="{Binding DisplayName}"
+                               FontFamily="RobotoBold"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#1F1B16" />
+                        <Label Text="{Binding DisplayPhone}"
+                               FontFamily="Roboto"
+                               FontSize="13"
+                               TextColor="#8A847E" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Section: Tài khoản -->
+            <Label Text="Tài khoản"
+                   FontFamily="RobotoBold"
+                   FontSize="13"
+                   TextColor="#8A847E"
+                   Margin="4,4,0,0" />
+
+            <!-- Personal Info Row -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 20">
+                <Grid Padding="20,18"
+                      ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="14">
+                    <Label Grid.Column="0"
+                           Text="&#xe7fd;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="22"
+                           TextColor="#FF8A00"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="Thông tin cá nhân"
+                           FontFamily="Roboto"
+                           FontSize="16"
+                           TextColor="#1F1B16"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="2"
+                           Text="&#xe5c8;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="20"
+                           TextColor="#B0A090"
+                           VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPersonalInfoClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Border>
+
+            <!-- Order History Row -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 20">
+                <Grid Padding="20,18"
+                      ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="14">
+                    <Label Grid.Column="0"
+                           Text="&#xe8cc;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="22"
+                           TextColor="#FF8A00"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="Lịch sử đơn hàng"
+                           FontFamily="Roboto"
+                           FontSize="16"
+                           TextColor="#1F1B16"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="2"
+                           Text="&#xe5c8;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="20"
+                           TextColor="#B0A090"
+                           VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOrderHistoryClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Border>
+
+            <!-- Section: Khác -->
+            <Label Text="Khác"
+                   FontFamily="RobotoBold"
+                   FontSize="13"
+                   TextColor="#8A847E"
+                   Margin="4,4,0,0" />
+
+            <!-- Logout Row -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 20">
+                <Grid Padding="20,18"
+                      ColumnDefinitions="Auto,*"
+                      ColumnSpacing="14">
+                    <Label Grid.Column="0"
+                           Text="&#xe9ba;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="22"
+                           TextColor="#E53935"
+                           VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="Đăng xuất"
+                           FontFamily="Roboto"
+                           FontSize="16"
+                           TextColor="#E53935"
+                           VerticalOptions="Center" />
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLogoutClicked" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

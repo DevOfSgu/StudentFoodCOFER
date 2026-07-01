@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StudentFood.MobileApp.Models"
+             x:Class="StudentFood.MobileApp.Pages.OrdersPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Đơn hàng">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <Grid Padding="20,52,20,16" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Giỏ hàng" FontFamily="RobotoBold" FontSize="26" FontAttributes="Bold" TextColor="#1F1B16" />
+                <Label Text="Kiểm tra và điều chỉnh trước khi đặt hàng" FontFamily="Roboto" FontSize="13" TextColor="#8A847E" />
+            </VerticalStackLayout>
+            <Border Grid.Column="1"
+                    BackgroundColor="#FFF1E0"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 999"
+                    Padding="12,6"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding HasCartItems}">
+                <Label Text="{Binding ItemsCountText}"
+                       FontFamily="RobotoBold"
+                       FontSize="13"
+                       TextColor="#FF8A00" />
+            </Border>
+        </Grid>
+
+        <!-- Cart Items List -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,24" Spacing="12">
+
+                <!-- Empty Cart State -->
+                <Border IsVisible="{Binding IsCartEmpty}"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Padding="32"
+                        Margin="0,8,0,0">
+                    <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
+                        <Label Text="&#xe8cc;"
+                               FontFamily="MaterialSymbolsOutlined"
+                               FontSize="52"
+                               TextColor="#FF8A00"
+                               HorizontalOptions="Center" />
+                        <Label Text="Giỏ hàng trống"
+                               FontFamily="RobotoBold"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#1F1B16"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Hãy thêm món ăn vào giỏ hàng để bắt đầu đặt hàng."
+                               FontFamily="Roboto"
+                               FontSize="14"
+                               TextColor="#5B5147"
+                               HorizontalTextAlignment="Center" />
+                        <Button Text="Xem thực đơn"
+                                BackgroundColor="#FF8A00"
+                                TextColor="White"
+                                CornerRadius="16"
+                                HeightRequest="52"
+                                Clicked="OnBrowseMenuClicked" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Cart Items -->
+                <CollectionView ItemsSource="{Binding CartItems}"
+                                SelectionMode="None"
+                                IsVisible="{Binding HasCartItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CartItem">
+                            <Border Margin="0,0,0,10"
+                                    Padding="16"
+                                    BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 20">
+                                <VerticalStackLayout Spacing="12">
+
+                                    <!-- Food Image + Name + Price row -->
+                                    <Grid ColumnDefinitions="72,*,Auto" ColumnSpacing="14">
+                                        <Border StrokeThickness="0"
+                                                BackgroundColor="#EFE7DE"
+                                                StrokeShape="RoundRectangle 14"
+                                                HeightRequest="72"
+                                                WidthRequest="72">
+                                            <Image Source="{Binding Food.FullImageUrl}" Aspect="AspectFill" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label Text="{Binding Food.Name}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="15"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1F1B16"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Food.CanteenName}"
+                                                   FontFamily="Roboto"
+                                                   FontSize="12"
+                                                   TextColor="#8A847E" />
+                                            <Label Text="{Binding Food.DisplayPrice}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="15"
+                                                   TextColor="#FF8A00" />
+                                        </VerticalStackLayout>
+                                        <!-- Delete Button -->
+                                        <Button Grid.Column="2"
+                                                Text="&#xe872;"
+                                                FontFamily="MaterialSymbolsOutlined"
+                                                FontSize="20"
+                                                BackgroundColor="Transparent"
+                                                TextColor="#C0A090"
+                                                WidthRequest="40"
+                                                HeightRequest="40"
+                                                Padding="0"
+                                                VerticalOptions="Start"
+                                                Clicked="OnDeleteItemClicked"
+                                                CommandParameter="{Binding .}" />
+                                    </Grid>
+
+                                    <!-- Note Entry -->
+                                    <Border BackgroundColor="#F7F3EE"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 12"
+                                            Padding="12,8">
+                                        <Entry Placeholder="Ghi chú cho món này (không bắt buộc)..."
+                                               Text="{Binding Note, Mode=TwoWay}"
+                                               FontFamily="Roboto"
+                                               FontSize="13"
+                                               TextColor="#1F1B16"
+                                               PlaceholderColor="#B0A090"
+                                               BackgroundColor="Transparent" />
+                                    </Border>
+
+                                    <!-- Quantity Stepper -->
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                        <Label Text="{Binding DisplayTotalPrice}"
+                                               FontFamily="RobotoBold"
+                                               FontSize="17"
+                                               TextColor="#FF8A00"
+                                               VerticalOptions="Center" />
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="0" VerticalOptions="Center">
+                                            <Border BackgroundColor="#FFF1E0"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    HeightRequest="40"
+                                                    WidthRequest="40">
+                                                <Button Text="&#xe15b;"
+                                                        FontFamily="MaterialSymbolsOutlined"
+                                                        FontSize="18"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="#FF8A00"
+                                                        Padding="0"
+                                                        Clicked="OnDecreaseClicked"
+                                                        CommandParameter="{Binding .}" />
+                                            </Border>
+                                            <Label Text="{Binding Quantity}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="17"
+                                                   TextColor="#1F1B16"
+                                                   WidthRequest="36"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalOptions="Center" />
+                                            <Border BackgroundColor="#FF8A00"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    HeightRequest="40"
+                                                    WidthRequest="40">
+                                                <Button Text="&#xe145;"
+                                                        FontFamily="MaterialSymbolsOutlined"
+                                                        FontSize="18"
+                                                        BackgroundColor="Transparent"
+                                                        TextColor="White"
+                                                        Padding="0"
+                                                        Clicked="OnIncreaseClicked"
+                                                        CommandParameter="{Binding .}" />
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Summary & Checkout -->
+        <Border Grid.Row="2"
+                BackgroundColor="White"
+                StrokeThickness="0"
+                Padding="24,20,24,40"
+                StrokeShape="RoundRectangle 30,30,0,0"
+                IsVisible="{Binding HasCartItems}">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-4" Opacity="0.06" Radius="12" />
+            </Border.Shadow>
+            <VerticalStackLayout Spacing="12">
+                <!-- Subtotal -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Tạm tính" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="{Binding SubtotalDisplay}" FontFamily="RobotoBold" FontSize="16" TextColor="#1F1B16" VerticalOptions="Center" />
+                </Grid>
+                <!-- Checkout Button -->
+                <Button Text="Tiến hành đặt hàng"
+                        BackgroundColor="#FF8A00"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="56"
+                        FontFamily="RobotoBold"
+                        FontSize="16"
+                        Clicked="OnCheckoutClicked" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

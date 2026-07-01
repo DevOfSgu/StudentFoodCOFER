@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.EditProfilePage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Thông tin cá nhân">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+        <Grid Padding="20,52,20,16" ColumnDefinitions="Auto,*">
+            <Button Grid.Column="0"
+                    Text="&#xe5c4;"
+                    FontFamily="MaterialSymbolsOutlined"
+                    FontSize="22"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F1B16"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    Padding="0"
+                    Clicked="OnBackClicked" />
+            <Label Grid.Column="1"
+                   Text="Thông tin cá nhân"
+                   FontFamily="RobotoBold"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#1F1B16"
+                   VerticalOptions="Center"
+                   Margin="8,0,0,0" />
+        </Grid>
+
+        <!-- Form -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,24" Spacing="16">
+
+                <!-- Avatar Circle -->
+                <Border BackgroundColor="#FF8A00"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999"
+                        HeightRequest="88"
+                        WidthRequest="88"
+                        HorizontalOptions="Center"
+                        Margin="0,8,0,16">
+                    <Label Text="{Binding AvatarInitial}"
+                           FontFamily="RobotoBold"
+                           FontSize="36"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+
+                <!-- Full Name -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Họ và tên"
+                           FontFamily="RobotoBold"
+                           FontSize="13"
+                           TextColor="#5B5147" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="16,14">
+                        <Entry x:Name="FullNameEntry"
+                               Placeholder="Nhập họ và tên..."
+                               FontFamily="Roboto"
+                               FontSize="15"
+                               TextColor="#1F1B16"
+                               PlaceholderColor="#B0A090"
+                               BackgroundColor="Transparent"
+                               Text="{Binding FullName}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Email -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Email"
+                           FontFamily="RobotoBold"
+                           FontSize="13"
+                           TextColor="#5B5147" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="16,14">
+                        <Entry x:Name="EmailEntry"
+                               Placeholder="Nhập địa chỉ email..."
+                               FontFamily="Roboto"
+                               FontSize="15"
+                               TextColor="#1F1B16"
+                               PlaceholderColor="#B0A090"
+                               BackgroundColor="Transparent"
+                               Keyboard="Email"
+                               Text="{Binding Email}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Phone Number -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Số điện thoại"
+                           FontFamily="RobotoBold"
+                           FontSize="13"
+                           TextColor="#5B5147" />
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="16,14">
+                        <Entry x:Name="PhoneEntry"
+                               Placeholder="Nhập số điện thoại..."
+                               FontFamily="Roboto"
+                               FontSize="15"
+                               TextColor="#1F1B16"
+                               PlaceholderColor="#B0A090"
+                               BackgroundColor="Transparent"
+                               Keyboard="Telephone"
+                               Text="{Binding PhoneNumber}" />
+                    </Border>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Save Button -->
+        <Border Grid.Row="2"
+                BackgroundColor="White"
+                StrokeThickness="0"
+                Padding="24,20,24,40"
+                StrokeShape="RoundRectangle 30,30,0,0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-4" Opacity="0.06" Radius="12" />
+            </Border.Shadow>
+            <Button Text="Lưu thay đổi"
+                    BackgroundColor="#FF8A00"
+                    TextColor="White"
+                    CornerRadius="16"
+                    HeightRequest="56"
+                    FontFamily="RobotoBold"
+                    FontSize="16"
+                    Clicked="OnSaveClicked" />
+        </Border>
+
+    </Grid>
+</ContentPage>

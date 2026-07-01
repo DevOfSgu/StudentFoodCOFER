@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.FoodDetailPage"
+             BackgroundColor="#F7F3EE"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False"
+             Title="Chi tiết món">
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Image & Back Button -->
+        <Grid HeightRequest="300">
+            <Image Source="{Binding Food.FoodImageSource}" Aspect="AspectFill" />
+            <BoxView Color="Black" Opacity="0.2" />
+            
+            <Border HorizontalOptions="Start" VerticalOptions="Start" Margin="20,40,0,0"
+                    BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24"
+                    HeightRequest="48" WidthRequest="48">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackClicked" />
+                </Border.GestureRecognizers>
+                <Label Text="&#xe5cb;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="#1F1B16" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1" Margin="0,-30,0,0">
+            <Border BackgroundColor="#F7F3EE" StrokeThickness="0" StrokeShape="RoundRectangle 30,30,0,0" Padding="24,30">
+                <VerticalStackLayout Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{Binding Food.Name}" FontFamily="RobotoBold" FontSize="24" TextColor="#1F1B16" FontAttributes="Bold" />
+                    </Grid>
+
+                    <HorizontalStackLayout Spacing="12">
+                        <HorizontalStackLayout Spacing="4">
+                            <Label Text="★" TextColor="#FFB020" FontSize="16" />
+                            <Label Text="{Binding Food.AverageRating, StringFormat='{0:F1}'}" FontFamily="RobotoBold" FontSize="14" TextColor="#1F1B16" />
+                            <Label Text="(120+)" FontFamily="Roboto" FontSize="14" TextColor="#8A847E" />
+                        </HorizontalStackLayout>
+                        <Label Text="•" TextColor="#8A847E" VerticalOptions="Center" />
+                        <Label Text="{Binding Food.CanteenName}" FontFamily="Roboto" FontSize="14" TextColor="#8A847E" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="Mô tả" FontFamily="RobotoBold" FontSize="18" TextColor="#1F1B16" FontAttributes="Bold" Margin="0,8,0,0" />
+                    <Label Text="{Binding Food.Description}" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" LineHeight="1.5" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,8,0,0" VerticalOptions="Center">
+                        <Label Text="Số lượng" FontFamily="RobotoBold" FontSize="18" TextColor="#1F1B16" FontAttributes="Bold" VerticalOptions="Center" />
+                        <Border Grid.Column="1"
+                                Stroke="#E8D8C6"
+                                StrokeShape="RoundRectangle 16"
+                                BackgroundColor="#FFFDFC"
+                                Padding="10,6"
+                                HeightRequest="44"
+                                WidthRequest="112"
+                                HorizontalOptions="End">
+                            <HorizontalStackLayout Spacing="14" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="−" FontFamily="RobotoBold" FontSize="18" TextColor="#5B5147" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnDecreaseQuantityClicked" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="{Binding Quantity}" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" TextColor="#1F1B16" VerticalOptions="Center" />
+                                <Label Text="+" FontFamily="RobotoBold" FontSize="18" TextColor="#5B5147" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnIncreaseQuantityClicked" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
+                    
+                    <Label Text="Ghi chú thêm" FontFamily="RobotoBold" FontSize="18" TextColor="#1F1B16" FontAttributes="Bold" Margin="0,8,0,0" />
+                    <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
+                        <Editor Placeholder="Thêm ít đá, không hành..." FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" HeightRequest="80" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+
+        <!-- Bottom Action -->
+        <Border Grid.Row="2" BackgroundColor="White" StrokeThickness="0" Padding="24,16,24,32" StrokeShape="RoundRectangle 24,24,0,0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-4" Opacity="0.05" Radius="10" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Tổng cộng" FontFamily="Roboto" FontSize="14" TextColor="#8A847E" />
+                    <Label Text="{Binding Food.DisplayPrice}" FontFamily="RobotoBold" FontSize="24" TextColor="#FF8A00" FontAttributes="Bold" />
+                </VerticalStackLayout>
+                
+                <Button Grid.Column="1" Text="Thêm vào giỏ hàng" BackgroundColor="#FF8A00" TextColor="White" FontFamily="RobotoBold" FontAttributes="Bold" CornerRadius="18" HeightRequest="56" Padding="32,0" Clicked="OnAddToCartClicked" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

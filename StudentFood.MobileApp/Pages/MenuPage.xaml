@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StudentFood.MobileApp.Models"
+             x:Class="StudentFood.MobileApp.Pages.MenuPage"
+             x:Name="ThisPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Thực đơn">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="20,24,20,36" Spacing="20">
+                
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Thực đơn"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           FontFamily="RobotoBold"
+                           TextColor="#1F1B16"
+                           VerticalOptions="Center" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*">
+                    <Border StrokeThickness="1"
+                            Stroke="#E8D8C6"
+                            BackgroundColor="White"
+                            StrokeShape="RoundRectangle 18"
+                            Padding="12,4">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <Label Text="&#xe8b6;" FontFamily="MaterialSymbolsOutlined" FontSize="20" TextColor="#8A847E" VerticalOptions="Center" />
+                            <Entry Grid.Column="1"
+                                   Placeholder="Tìm món ăn..."
+                                   FontFamily="Roboto"
+                                   TextColor="#1F1B16"
+                                   PlaceholderColor="#8A847E"
+                                   ClearButtonVisibility="WhileEditing"
+                                   TextChanged="OnSearchTextChanged" />
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                    <HorizontalStackLayout Spacing="10">
+                        <Border BackgroundColor="{Binding AllChipBackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="16,8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectAllCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Tất cả" TextColor="{Binding AllChipTextColor}" FontFamily="RobotoBold" FontSize="14" />
+                        </Border>
+                        <Border BackgroundColor="{Binding RiceChipBackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="16,8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectRiceCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Cơm Phần" TextColor="{Binding RiceChipTextColor}" FontFamily="Roboto" FontSize="14" />
+                        </Border>
+                        <Border BackgroundColor="{Binding NoodleChipBackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="16,8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectNoodleCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Mì/Phở" TextColor="{Binding NoodleChipTextColor}" FontFamily="Roboto" FontSize="14" />
+                        </Border>
+                        <Border BackgroundColor="{Binding DrinkChipBackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="16,8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectDrinkCommand}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="Đồ uống" TextColor="{Binding DrinkChipTextColor}" FontFamily="Roboto" FontSize="14" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <CollectionView ItemsSource="{Binding Foods}"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="14" VerticalItemSpacing="14" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:FoodItem">
+                            <Border Padding="12"
+                                    BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 22">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.FoodTappedCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout Spacing="8">
+                                    <Grid>
+                                        <Border StrokeThickness="0"
+                                                BackgroundColor="#EFE7DE"
+                                                StrokeShape="RoundRectangle 18"
+                                                HeightRequest="120"
+                                                HorizontalOptions="Fill">
+                                            <Image Source="{Binding FullImageUrl}"
+                                                   Aspect="AspectFill" />
+                                        </Border>
+                                    </Grid>
+
+                                    <Label Text="{Binding Name}"
+                                           FontAttributes="Bold"
+                                           FontFamily="RobotoBold"
+                                           FontSize="15"
+                                           TextColor="#1F1B16"
+                                           MaxLines="1"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding Description}"
+                                           FontSize="12"
+                                           FontFamily="Roboto"
+                                           TextColor="#8A847E"
+                                           MaxLines="2"
+                                           LineBreakMode="TailTruncation" />
+                                    
+                                    <Grid ColumnDefinitions="*,Auto" VerticalOptions="End">
+                                        <Label Text="{Binding DisplayPrice}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               FontFamily="RobotoBold"
+                                               TextColor="#FF8A00" />
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="#FF8A00"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 14"
+                                                HeightRequest="28"
+                                                WidthRequest="28"
+                                                Padding="0">
+                                            <Label Text="+"
+                                                   FontSize="16"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Border>
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Border IsVisible="{Binding HasPagination}"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 18"
+                        Padding="12">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Button Text="Trước" Command="{Binding PreviousPageCommand}" BackgroundColor="#F7F3EE" TextColor="#5B5147" CornerRadius="14" HeightRequest="44" />
+                        <Label Grid.Column="1" Text="{Binding PageInfoDisplay}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="RobotoBold" FontAttributes="Bold" TextColor="#1F1B16" />
+                        <Button Grid.Column="2" Text="Sau" Command="{Binding NextPageCommand}" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="14" HeightRequest="44" />
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="StudentFood.MobileApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:StudentFood.MobileApp.Pages"
+    Title="StudentFood">
+
+    <Shell.Resources>
+        <Style TargetType="TabBar">
+            <Setter Property="Shell.TabBarBackgroundColor" Value="#FFFFFF" />
+            <Setter Property="Shell.TabBarTitleColor" Value="#8A847E" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#8A847E" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="#FF8A00" />
+        </Style>
+    </Shell.Resources>
+
+    <TabBar>
+        <Tab Title="Trang chủ">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialSymbolsOutlined" Glyph="&#xe88a;" />
+            </Tab.Icon>
+            <ShellContent Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" />
+        </Tab>
+
+        <Tab Title="Tìm kiếm">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialSymbolsOutlined" Glyph="&#xe8b6;" />
+            </Tab.Icon>
+            <ShellContent Route="MenuPage" ContentTemplate="{DataTemplate pages:MenuPage}" />
+        </Tab>
+
+        <Tab Title="Đơn hàng">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialSymbolsOutlined" Glyph="&#xe8cc;" />
+            </Tab.Icon>
+            <ShellContent Route="OrdersPage" ContentTemplate="{DataTemplate pages:OrdersPage}" />
+        </Tab>
+
+        <Tab Title="Tài khoản">
+            <Tab.Icon>
+                <FontImageSource FontFamily="MaterialSymbolsOutlined" Glyph="&#xe7fd;" />
+            </Tab.Icon>
+            <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate pages:ProfilePage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

@@ -1,0 +1,701 @@
+@model List<StudentFood.WebAdmin.Models.Order>
+@{
+    Layout = null;
+    ViewData["Title"] = "Dashboard Canteen";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - StudentFood COFER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #F9F7F4;
+            --bg-sidebar: #FAF8F5;
+            --text-dark: #2A241F;
+            --text-gray: #8A847E;
+            --primary-orange: #FF8A00;
+            --primary-brown: #A05A19;
+            --bg-card: #FFFFFF;
+            --border-color: #EBE5DE;
+            --success-green: #22C55E;
+            --bg-hover: #EFEAE4;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 30px 24px;
+        }
+
+        .sidebar-title {
+            color: var(--primary-brown);
+            font-weight: 800;
+            font-size: 20px;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .sidebar-subtitle {
+            color: var(--text-gray);
+            font-size: 12px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .sidebar-menu {
+            padding: 10px 16px;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 16px;
+            color: var(--text-gray);
+            transition: color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: var(--bg-hover);
+        }
+
+        .menu-item.active {
+            background-color: #EFE4D6;
+            color: var(--text-dark);
+        }
+
+        .menu-item.active i {
+            color: var(--text-dark);
+        }
+
+        .sidebar-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .user-info h6 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .user-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 130px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .logout-btn i {
+            margin-right: 10px;
+        }
+
+        .logout-btn:hover {
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px 40px;
+        }
+
+        /* Top Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        /* Cards */
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .stat-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .stat-icon-small {
+            color: var(--primary-brown);
+            font-size: 16px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        /* Tables */
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-custom th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-custom td {
+            padding: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .badge-delivered { background: #D1FAE5; color: #166534; }
+        .badge-pending { background: #FEF3C7; color: #92400E; }
+        .badge-preparing { background: #DBEAFE; color: #1E40AF; }
+        .badge-ready { background: #DCFCE7; color: #166534; }
+
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .btn-action-primary {
+            background-color: var(--primary-brown);
+            color: white;
+        }
+
+        /* Canteen Dashboard Specific Styles */
+        .sidebar {
+            background-color: #FDFDFD;
+            border-right: 1px solid #F0F0F0;
+        }
+        
+        .main-content {
+            background-color: #FAFAFA;
+            min-height: 100vh;
+        }
+
+        .canteen-header-card {
+            background: linear-gradient(135deg, #FFF6E5 0%, #FFECD2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #FFE4C4;
+            height: 100%;
+        }
+
+        /* Stats Cards (White style like image) */
+        .stat-card-clean {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #EAEAEA;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            height: 100%;
+        }
+
+        .stat-card-clean .stat-header {
+            margin-bottom: 12px;
+        }
+
+        .stat-card-clean .stat-title {
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 0;
+            text-transform: none;
+            font-weight: 600;
+        }
+
+        .stat-card-clean .stat-value {
+            font-size: 28px;
+            color: #111;
+        }
+
+        /* Kanban Board Styles */
+        .kanban-board {
+            display: flex;
+            gap: 24px;
+            margin-top: 20px;
+            align-items: flex-start;
+        }
+
+        .kanban-column {
+            flex: 1;
+            background: #F4F5F7;
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .kanban-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .kanban-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .dot-pending { background-color: #EF4444; }
+        .dot-preparing { background-color: #F59E0B; }
+        .dot-ready { background-color: #10B981; }
+
+        .kanban-count {
+            color: #888;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .order-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #EAEAEA;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .order-card.ready-card {
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .order-id {
+            font-weight: 700;
+            font-size: 13px;
+            color: #D97706;
+        }
+
+        .order-time {
+            font-size: 11px;
+            background: #F3F4F6;
+            padding: 4px 8px;
+            border-radius: 20px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .order-customer {
+            font-weight: 700;
+            font-size: 15px;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .order-items {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+
+        .order-item {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .order-item::before {
+            content: "•";
+            color: #D97706;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .order-price {
+            font-weight: 800;
+            font-size: 15px;
+            color: #111;
+        }
+
+        .btn-kanban {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-accept {
+            background: white;
+            border: 1px solid #EAEAEA;
+            color: #111;
+        }
+        
+        .btn-accept:hover {
+            border-color: #D97706;
+            color: #D97706;
+        }
+
+        .btn-prepare {
+            background: #059669;
+            color: white;
+        }
+        
+        .btn-prepare:hover {
+            background: #047857;
+        }
+
+        .btn-deliver {
+            background: #065F46;
+            color: white;
+        }
+
+        .order-note {
+            color: #EF4444;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .top-bar-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .add-food-btn {
+            background: #B45309;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header" style="text-align: center; padding: 20px 24px;">
+            <img src="/logo.png" alt="Logo" style="height: 120px; object-fit: contain; margin-bottom: 10px;">
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-border-all"></i> Tổng quan
+            </a>
+            <a href="/Foods" class="menu-item">
+                <i class="fas fa-utensils"></i> Quản lý Món ăn
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="/img/avatar_canteen.png" alt="Canteen" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Canteen&background=FFF3E0&color=FF8A00'">
+                <div class="user-info">
+                    <h6>@Context.Session.GetString("UserName")</h6>
+                    <p>@ViewBag.CanteenName</p>
+                </div>
+            </div>
+            <a href="/Account/Logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar-custom">
+            <div>
+                <h2 class="page-title" style="color: #92400E; margin-bottom: 4px;">Chào buổi sáng, @ViewBag.CanteenName</h2>
+                <p style="color: #666; font-size: 13px; font-weight: 500; margin: 0;">@DateTime.Now.ToString("dd MMMM, yyyy")</p>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Tìm kiếm đơn hàng, món ăn..." style="background: white; border: 1px solid #EAEAEA;">
+                </div>
+                <button class="add-food-btn"><i class="fas fa-plus"></i> Thêm món ăn</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards (Clean White Style) -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card-clean">
+                    <div class="stat-header">
+                        <i class="fas fa-shopping-cart" style="color: #B45309; font-size: 18px; margin-bottom: 8px;"></i>
+                        <h3 class="stat-title">ĐƠN HÀNG HÔM NAY</h3>
+                    </div>
+                    <div class="stat-value">@ViewBag.OrdersToday</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card-clean">
+                    <div class="stat-header">
+                        <i class="fas fa-fire" style="color: #F59E0B; font-size: 18px; margin-bottom: 8px;"></i>
+                        <h3 class="stat-title">ĐANG CHUẨN BỊ</h3>
+                    </div>
+                    <div class="stat-value">@ViewBag.PreparingOrders</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card-clean">
+                    <div class="stat-header">
+                        <i class="fas fa-check-circle" style="color: #10B981; font-size: 18px; margin-bottom: 8px;"></i>
+                        <h3 class="stat-title">ĐÃ HOÀN THÀNH</h3>
+                    </div>
+                    <div class="stat-value">@ViewBag.CompletedOrders</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="canteen-header-card">
+                    <div class="stat-header">
+                        <i class="fas fa-money-bill-wave" style="color: #B45309; font-size: 18px; margin-bottom: 8px;"></i>
+                        <h3 class="stat-title" style="color: #92400E;">DOANH THU HÔM NAY</h3>
+                    </div>
+                    <div class="stat-value" style="color: #92400E;">@string.Format("{0:N0}đ", ViewBag.RevenueToday)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kanban Board Section -->
+        <div style="margin-top: 30px; margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 4px;">Quản lý Đơn hàng</h3>
+            <p style="color: #666; font-size: 13px; margin: 0;">Theo dõi và quản lý đơn hàng theo thời gian thực</p>
+        </div>
+
+        <div class="kanban-board">
+            <!-- Cột Chờ xác nhận -->
+            <div class="kanban-column">
+                <div class="kanban-header">
+                    <div class="kanban-dot dot-pending"></div>
+                    Chờ xác nhận <span class="kanban-count">@Model.Count(o => o.Status == "pending")</span>
+                </div>
+                
+                @foreach (var order in Model.Where(o => o.Status == "pending"))
+                {
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span class="order-id">#ORD-@order.Id</span>
+                            <span class="order-time">@((DateTime.UtcNow - order.CreatedAt).Minutes) phút trước</span>
+                        </div>
+                        <div class="order-customer">@order.Student.FullName</div>
+                        <ul class="order-items">
+                            @foreach(var item in order.OrderItems)
+                            {
+                                <li class="order-item">@item.Quantity x @item.Food.Name</li>
+                            }
+                        </ul>
+                        <div class="order-footer">
+                            <span class="order-price">@string.Format("{0:N0}đ", order.TotalPrice)</span>
+                            <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin: 0;">
+                                <input type="hidden" name="orderId" value="@order.Id" />
+                                <input type="hidden" name="status" value="preparing" />
+                                <button type="submit" class="btn-kanban btn-accept">Nhận đơn</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Cột Đang chuẩn bị -->
+            <div class="kanban-column">
+                <div class="kanban-header">
+                    <div class="kanban-dot dot-preparing"></div>
+                    Đang chuẩn bị <span class="kanban-count">@Model.Count(o => o.Status == "preparing")</span>
+                </div>
+
+                @foreach (var order in Model.Where(o => o.Status == "preparing"))
+                {
+                    <div class="order-card" style="border-left: 3px solid #F59E0B;">
+                        <div class="order-card-header">
+                            <span class="order-id">#ORD-@order.Id</span>
+                            <span class="order-time" style="color: #D97706; background: #FEF3C7;">Đang nấu...</span>
+                        </div>
+                        <div class="order-customer">@order.Student.FullName</div>
+                        <ul class="order-items">
+                            @foreach(var item in order.OrderItems)
+                            {
+                                <li class="order-item">@item.Quantity x @item.Food.Name</li>
+                            }
+                        </ul>
+                        <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin-top: 16px;">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <input type="hidden" name="status" value="ready" />
+                            <button type="submit" class="btn-kanban btn-prepare">Đã nấu xong</button>
+                        </form>
+                    </div>
+                }
+            </div>
+
+            <!-- Cột Chờ lấy đồ -->
+            <div class="kanban-column">
+                <div class="kanban-header">
+                    <div class="kanban-dot dot-ready"></div>
+                    Sẵn sàng giao <span class="kanban-count">@Model.Count(o => o.Status == "ready")</span>
+                </div>
+
+                @foreach (var order in Model.Where(o => o.Status == "ready"))
+                {
+                    <div class="order-card ready-card">
+                        <div class="order-card-header">
+                            <span class="order-id" style="color: #059669;">GỌI TÊN NHẬN MÓN</span>
+                        </div>
+                        <div class="order-customer">@order.Student.FullName</div>
+                        <ul class="order-items">
+                            @foreach(var item in order.OrderItems)
+                            {
+                                <li class="order-item">@item.Quantity x @item.Food.Name</li>
+                            }
+                        </ul>
+                        <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin-top: 16px;">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <input type="hidden" name="status" value="delivered" />
+                            <button type="submit" class="btn-kanban btn-deliver"><i class="fas fa-check-circle"></i> Đã giao khách</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

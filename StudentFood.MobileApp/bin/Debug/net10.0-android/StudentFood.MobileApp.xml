@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StudentFood.MobileApp</name>
+    </assembly>
+    <members>
+        <member name="M:StudentFood.MobileApp.Pages.ThemedConfirmPopupPage.ShowAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            Shows the confirmation dialog and returns true if the user tapped Confirm, false if they tapped Cancel.
+            </summary>
+        </member>
+        <member name="T:StudentFood.MobileApp.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+    </members>
+</doc>

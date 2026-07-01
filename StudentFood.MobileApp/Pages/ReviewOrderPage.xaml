@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.ReviewOrderPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Đánh giá món ăn">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Grid Padding="20,24,20,16" ColumnDefinitions="Auto,*,Auto">
+            <Label Text="&#xe5cb;" FontFamily="MaterialSymbolsOutlined" FontSize="28" TextColor="#1F1B16" VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Column="1" Text="Đánh giá món ăn" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#A76020" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,32" Spacing="20">
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="{Binding SelectedFoodName}" FontFamily="RobotoBold" FontSize="22" FontAttributes="Bold" TextColor="#1F1B16" />
+                        <Grid ColumnDefinitions="72,*" ColumnSpacing="14">
+                            <Border StrokeThickness="0" BackgroundColor="#EFE7DE" StrokeShape="RoundRectangle 18" HeightRequest="72" WidthRequest="72">
+                                <Image Source="{Binding SelectedFoodImageUrl}" Aspect="AspectFill" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                <Label Text="{Binding OrderId, StringFormat='Đơn hàng #{0:D4}'}" FontFamily="RobotoBold" FontSize="14" TextColor="#FF8A00" />
+                                <Label Text="{Binding SelectedOrderStatusText}" FontFamily="Roboto" FontSize="13" TextColor="#5B5147" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="Chấm điểm món ăn" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#1F1B16" />
+                        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="10" HorizontalOptions="Center">
+                            <Border BackgroundColor="{Binding Star1BackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 16" HeightRequest="48" WidthRequest="48">
+                                <Label Text="&#xe838;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding Star1TextColor}" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="1" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Border>
+                            <Border Grid.Column="1" BackgroundColor="{Binding Star2BackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 16" HeightRequest="48" WidthRequest="48">
+                                <Label Text="&#xe838;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding Star2TextColor}" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="2" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Border>
+                            <Border Grid.Column="2" BackgroundColor="{Binding Star3BackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 16" HeightRequest="48" WidthRequest="48">
+                                <Label Text="&#xe838;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding Star3TextColor}" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="3" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Border>
+                            <Border Grid.Column="3" BackgroundColor="{Binding Star4BackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 16" HeightRequest="48" WidthRequest="48">
+                                <Label Text="&#xe838;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding Star4TextColor}" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="4" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Border>
+                            <Border Grid.Column="4" BackgroundColor="{Binding Star5BackgroundColor}" StrokeThickness="0" StrokeShape="RoundRectangle 16" HeightRequest="48" WidthRequest="48">
+                                <Label Text="&#xe838;" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding Star5TextColor}" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="5" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Border>
+                        </Grid>
+                        <Label Text="{Binding RatingText}" FontFamily="Roboto" FontSize="13" TextColor="#8A847E" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Ghi chú" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#1F1B16" />
+                        <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 16" BackgroundColor="#FFFDFC" Padding="14,6">
+                            <Editor x:Name="CommentEditor"
+                                    Placeholder="Chia sẻ cảm nhận của bạn về món ăn..."
+                                    FontFamily="Roboto"
+                                    TextColor="#1F1B16"
+                                    PlaceholderColor="#B4AAA0"
+                                    HeightRequest="120" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2" BackgroundColor="White" StrokeThickness="0" Padding="24,20,24,32" StrokeShape="RoundRectangle 30,30,0,0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-4" Opacity="0.05" Radius="10" />
+            </Border.Shadow>
+            <Button Text="Gửi đánh giá" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="56" Clicked="OnSubmitClicked" />
+        </Border>
+    </Grid>
+</ContentPage>

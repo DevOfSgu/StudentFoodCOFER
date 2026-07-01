@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.ThemedMessagePopupPage"
+             BackgroundColor="#80000000"
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False">
+    <Grid Padding="24">
+        <Border BackgroundColor="White"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 24"
+                Padding="24"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="320">
+            <VerticalStackLayout Spacing="16">
+                <Border BackgroundColor="#FFF1E0"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 18"
+                        HeightRequest="56"
+                        WidthRequest="56"
+                        HorizontalOptions="Center">
+                    <Label Text="&#xe876;"
+                           FontFamily="MaterialSymbolsOutlined"
+                           FontSize="28"
+                           TextColor="#FF8A00"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+
+                <Label Text="{Binding TitleText}"
+                       FontFamily="RobotoBold"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="#1F1B16"
+                       HorizontalTextAlignment="Center" />
+
+                <Label Text="{Binding MessageText}"
+                       FontFamily="Roboto"
+                       FontSize="14"
+                       TextColor="#5B5147"
+                       HorizontalTextAlignment="Center" />
+
+                <Button Text="{Binding ButtonText}"
+                        BackgroundColor="#FF8A00"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="52"
+                        Clicked="OnCloseClicked" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

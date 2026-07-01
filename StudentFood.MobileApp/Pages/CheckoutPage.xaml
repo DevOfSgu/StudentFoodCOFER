@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StudentFood.MobileApp.Models"
+             x:Class="StudentFood.MobileApp.Pages.CheckoutPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Thanh toán">
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Header -->
+        <Grid Padding="20,24,20,16" ColumnDefinitions="Auto,*,Auto">
+            <Label Text="&#xe5cb;" FontFamily="MaterialSymbolsOutlined" FontSize="28" TextColor="#1F1B16" VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBackClicked" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Grid.Column="1" Text="StudentFood COFER" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#A76020" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,32" Spacing="24">
+
+                <!-- Order Summary -->
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 22" Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="&#xe8cc;" FontFamily="MaterialSymbolsOutlined" FontSize="20" TextColor="#A76020" VerticalOptions="Center" />
+                            <Label Text="Đơn hàng của bạn" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#1F1B16" VerticalOptions="Center" />
+                            <Label Text="{Binding ItemsCountDisplay}" FontFamily="Roboto" FontSize="12" TextColor="#8A847E" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding CartItems}" Spacing="12">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:CartItem">
+                                    <Grid ColumnDefinitions="56,*,Auto" ColumnSpacing="12">
+                                        <Border StrokeThickness="0" BackgroundColor="#EFE7DE" StrokeShape="RoundRectangle 14" HeightRequest="56" WidthRequest="56">
+                                            <Image Source="{Binding Food.FullImageUrl}" Aspect="AspectFill" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Food.Name}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#1F1B16" MaxLines="1" LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Quantity, StringFormat='Số lượng: {0}'}" FontFamily="Roboto" FontSize="12" TextColor="#8A847E" />
+                                        </VerticalStackLayout>
+
+                                        <Label Grid.Column="2" Text="{Binding DisplayTotalPrice}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#FF8A00" VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                        <BoxView HeightRequest="1" Color="#E8D8C6" Margin="0,4" />
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Tạm tính" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" />
+                            <Label Grid.Column="1" Text="{Binding SubtotalDisplay}" FontFamily="Roboto" FontSize="14" TextColor="#1F1B16" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Phí giao hàng" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" />
+                            <Label Grid.Column="1" Text="{Binding DeliveryFeeDisplay}" FontFamily="Roboto" FontSize="14" TextColor="#1F1B16" />
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Thuế" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" />
+                            <Label Grid.Column="1" Text="{Binding TaxDisplay}" FontFamily="Roboto" FontSize="14" TextColor="#1F1B16" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+                
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Thanh toán" FontFamily="RobotoBold" FontSize="28" FontAttributes="Bold" TextColor="#1F1B16" />
+                    <Label Text="Điền thông tin chi tiết đơn hàng của bạn dưới đây." FontFamily="Roboto" FontSize="14" TextColor="#5B5147" />
+                </VerticalStackLayout>
+
+                <!-- Delivery Info -->
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 22" Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="&#xe567;" FontFamily="MaterialSymbolsOutlined" FontSize="20" TextColor="#FF8A00" VerticalOptions="Center" />
+                            <Label Text="Thông tin giao hàng" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#1F1B16" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Họ tên" FontFamily="Roboto" FontSize="12" TextColor="#5B5147" />
+                            <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 16" BackgroundColor="#FFFDFC" Padding="14,0" HeightRequest="48">
+                                <Entry x:Name="FullNameEntry" Placeholder="Nguyễn Văn A" FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Số điện thoại" FontFamily="Roboto" FontSize="12" TextColor="#5B5147" />
+                            <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 16" BackgroundColor="#FFFDFC" Padding="14,0" HeightRequest="48">
+                                <Entry x:Name="PhoneEntry" Placeholder="090 123 4567" Keyboard="Telephone" FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Vị trí giao hàng" FontFamily="Roboto" FontSize="12" TextColor="#5B5147" />
+                            <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 16" BackgroundColor="#FFFDFC" Padding="14,0" HeightRequest="48">
+                                <Entry x:Name="AddressEntry" Placeholder="Thư viện, Phòng 302" FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Payment Method -->
+                <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 22" Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="&#xe850;" FontFamily="MaterialSymbolsOutlined" FontSize="20" TextColor="#A76020" VerticalOptions="Center" />
+                            <Label Text="Phương thức thanh toán" FontFamily="RobotoBold" FontSize="18" FontAttributes="Bold" TextColor="#1F1B16" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <VerticalStackLayout Spacing="12">
+                            <!-- Cash Option -->
+                            <Border Stroke="{Binding CashBorderColor}" StrokeThickness="2" StrokeShape="RoundRectangle 16" BackgroundColor="{Binding CashBackgroundColor}" Padding="16,12">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectCashCommand}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label Text="{Binding CashIcon}" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding CashIconColor}" VerticalOptions="Center" Margin="0,0,16,0" />
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="Tiền mặt" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" TextColor="#1F1B16" />
+                                        <Label Text="Thanh toán khi nhận thức ăn." FontFamily="Roboto" FontSize="13" TextColor="#5B5147" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+
+                            <!-- Transfer Option -->
+                            <Border Stroke="{Binding TransferBorderColor}" StrokeThickness="2" StrokeShape="RoundRectangle 16" BackgroundColor="{Binding TransferBackgroundColor}" Padding="16,12">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectTransferCommand}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label Text="{Binding TransferIcon}" FontFamily="MaterialSymbolsOutlined" FontSize="24" TextColor="{Binding TransferIconColor}" VerticalOptions="Center" Margin="0,0,16,0" />
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="Chuyển khoản" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" TextColor="#1F1B16" />
+                                        <Label Text="Chuyển khoản trực tiếp qua ứng dụng di động." FontFamily="Roboto" FontSize="13" TextColor="#5B5147" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Action -->
+        <Border Grid.Row="2" BackgroundColor="White" StrokeThickness="0" Padding="24,20,24,32" StrokeShape="RoundRectangle 30,30,0,0">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-4" Opacity="0.05" Radius="10" />
+            </Border.Shadow>
+            <VerticalStackLayout Spacing="20">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Tổng cộng" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" TextColor="#1F1B16" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="{Binding TotalDisplay}" FontFamily="RobotoBold" FontSize="24" FontAttributes="Bold" TextColor="#FF8A00" />
+                </Grid>
+                
+                <Button Text="Xác nhận đặt hàng &#xe5c8;" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="56" Clicked="OnConfirmOrderClicked" />
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
+</ContentPage>

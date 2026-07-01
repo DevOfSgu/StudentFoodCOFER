@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StudentFood.MobileApp.Pages.RegisterPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False"
+             Title="Đăng ký">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,12,24,32"
+                             Spacing="18">
+            <Border StrokeThickness="0"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 28"
+                    Padding="24,32">
+                <VerticalStackLayout Spacing="18">
+                    <Image Source="logo.png"
+                           HeightRequest="70"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center" />
+
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Tạo tài khoản"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               FontFamily="RobotoBold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#1F1B16" />
+                        <Label Text="Tham gia cộng đồng sinh viên sành ăn"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#8A847E" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Họ và tên" FontSize="14" TextColor="#5B5147" />
+                        <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
+                            <Entry x:Name="FullNameEntry" Placeholder="Nguyễn Văn A" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Email" FontSize="14" TextColor="#5B5147" />
+                        <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
+                            <Entry x:Name="EmailEntry" Placeholder="vidu@email.com" Keyboard="Email" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Mật khẩu" FontSize="14" TextColor="#5B5147" />
+                        <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Entry x:Name="PasswordEntry" Grid.Column="0" Placeholder="••••••••" IsPassword="True" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" />
+                                <Grid Grid.Column="1" WidthRequest="24" HeightRequest="24" VerticalOptions="Center">
+                                    <Image x:Name="TogglePasswordIcon" Source="visibility.png" Aspect="AspectFit" HeightRequest="24" WidthRequest="24">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnTogglePasswordClicked" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Nhập lại mật khẩu" FontSize="14" TextColor="#5B5147" />
+                        <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Entry x:Name="ConfirmPasswordEntry" Grid.Column="0" Placeholder="••••••••" IsPassword="True" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" />
+                                <Grid Grid.Column="1" WidthRequest="24" HeightRequest="24" VerticalOptions="Center">
+                                    <Image x:Name="ToggleConfirmPasswordIcon" Source="visibility.png" Aspect="AspectFit" HeightRequest="24" WidthRequest="24">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnToggleConfirmPasswordClicked" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Button x:Name="RegisterButton"
+                            Text="Đăng ký"
+                            HeightRequest="56"
+                            CornerRadius="18"
+                            BackgroundColor="#FF8A00"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Clicked="OnRegisterClicked" />
+
+                    <HorizontalStackLayout HorizontalOptions="Center"
+                                           Spacing="4">
+                        <Label Text="Đã có tài khoản?"
+                               TextColor="#8A847E" />
+                        <Label Text="Đăng nhập"
+                               TextColor="#A76020"
+                               FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLoginTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

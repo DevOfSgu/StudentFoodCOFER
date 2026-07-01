@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="StudentFood.MobileApp/StudentFood.MobileApp.csproj" />
+  <Project Path="StudentFood.WebAdmin/StudentFood.WebAdmin.csproj" />
+</Solution>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:StudentFood.MobileApp.Models"
+             x:Class="StudentFood.MobileApp.Pages.OrderHistoryPage"
+             BackgroundColor="#F7F3EE"
+             Shell.NavBarIsVisible="False"
+             Title="Lịch sử đơn hàng">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Padding="20,52,20,16" ColumnDefinitions="Auto,*">
+            <Button Grid.Column="0"
+                    Text="&#xe5c4;"
+                    FontFamily="MaterialSymbolsOutlined"
+                    FontSize="22"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F1B16"
+                    WidthRequest="44"
+                    HeightRequest="44"
+                    Padding="0"
+                    Clicked="OnBackClicked" />
+            <Label Grid.Column="1"
+                   Text="Lịch sử đơn hàng"
+                   FontFamily="RobotoBold"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#1F1B16"
+                   VerticalOptions="Center"
+                   Margin="8,0,0,0" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,0,20,32" Spacing="12">
+
+                <!-- Loading / Empty State -->
+                <Border IsVisible="{Binding IsEmpty}"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Padding="32"
+                        Margin="0,8,0,0">
+                    <VerticalStackLayout Spacing="14" HorizontalOptions="Center">
+                        <Label Text="&#xe8cc;"
+                               FontFamily="MaterialSymbolsOutlined"
+                               FontSize="48"
+                               TextColor="#FF8A00"
+                               HorizontalOptions="Center" />
+                        <Label Text="Chưa có đơn hàng"
+                               FontFamily="RobotoBold"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#1F1B16"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Các đơn hàng bạn đã đặt sẽ xuất hiện ở đây."
+                               FontFamily="Roboto"
+                               FontSize="14"
+                               TextColor="#5B5147"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Order List -->
+                <CollectionView ItemsSource="{Binding Orders}"
+                                SelectionMode="None"
+                                IsVisible="{Binding HasOrders}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:OrderHistoryItem">
+                            <Border Margin="0,0,0,12"
+                                    Padding="16"
+                                    BackgroundColor="White"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 20">
+                                <VerticalStackLayout Spacing="14">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="{Binding OrderNumberDisplay}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="17"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1F1B16" />
+                                            <Label Text="{Binding CanteenName}"
+                                                   FontFamily="Roboto"
+                                                   FontSize="12"
+                                                   TextColor="#8A847E" />
+                                        </VerticalStackLayout>
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="#FFF1E0"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 999"
+                                                Padding="10,4"
+                                                VerticalOptions="Start">
+                                            <Label Text="{Binding StatusText}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="12"
+                                                   TextColor="#FF8A00" />
+                                        </Border>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="72,*" ColumnSpacing="14">
+                                        <Border StrokeThickness="0"
+                                                BackgroundColor="#EFE7DE"
+                                                StrokeShape="RoundRectangle 14"
+                                                HeightRequest="72"
+                                                WidthRequest="72">
+                                            <Image Source="{Binding FirstItemImageUrl}" Aspect="AspectFill" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label Text="{Binding PrimaryItemSummary}"
+                                                   FontFamily="RobotoBold"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1F1B16"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding DisplayDeliveryEta}"
+                                                   FontFamily="Roboto"
+                                                   FontSize="12"
+                                                   TextColor="#8A847E" />
+                                            <Label Text="{Binding DisplayCreatedAt, StringFormat='Đặt lúc {0}'}"
+                                                   FontFamily="Roboto"
+                                                   FontSize="12"
+                                                   TextColor="#8A847E" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                        <Label Text="{Binding DisplayTotalPrice}"
+                                               FontFamily="RobotoBold"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="#FF8A00"
+                                               VerticalOptions="Center" />
+                                        <Button Grid.Column="1"
+                                                Text="Xem chi tiết"
+                                                BackgroundColor="#FF8A00"
+                                                TextColor="White"
+                                                CornerRadius="14"
+                                                HeightRequest="44"
+                                                Clicked="OnTrackOrderClicked" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
