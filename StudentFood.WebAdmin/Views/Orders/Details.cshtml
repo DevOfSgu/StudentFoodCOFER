@@ -65,6 +65,40 @@
         .review-card { background: var(--bg-main); border-radius: 12px; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); }
         .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .review-stars { color: #F59E0B; font-size: 13px; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1366px) {
+            .main-content { padding: 24px 24px; }
+        }
+        @media (max-width: 1200px) {
+            .sidebar { width: 220px; }
+            .main-content { margin-left: 220px; padding: 20px; }
+            .sidebar-header img { height: 60px; }
+            .page-title { font-size: 20px; }
+        }
+        @media (max-width: 992px) {
+            .sidebar { width: 200px; }
+            .main-content { margin-left: 200px; padding: 16px; }
+            .sidebar-header { padding: 16px; }
+            .sidebar-menu { padding: 8px 12px; }
+            .menu-item { padding: 10px 12px; font-size: 13px; }
+            .sidebar-footer { padding: 16px; }
+            .page-header { flex-wrap: wrap; }
+            .page-header > div:last-child { margin-left: 0 !important; width: 100%; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); flex-direction: row; flex-wrap: wrap; align-items: center; padding: 8px 16px; }
+            .sidebar-header { padding: 4px 0; }
+            .sidebar-header img { height: 40px; }
+            .sidebar-menu { display: flex; gap: 4px; padding: 0; margin: 0 12px; flex-grow: 1; }
+            .menu-item { padding: 6px 10px; font-size: 11px; margin-bottom: 0; white-space: nowrap; }
+            .sidebar-footer { display: none; }
+            .main-content { margin-left: 0; padding: 12px; }
+            .page-title { font-size: 18px; }
+            .page-header > div:last-child { width: 100%; }
+            .section-card { padding: 16px; }
+        }
     </style>
 </head>
 <body>

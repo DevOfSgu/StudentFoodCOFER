@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+615e9d31a5d4ab9aa85de46f4eade9aedd692ec3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+b8c228f66e138e974b0192ad246ac09432e692b7")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

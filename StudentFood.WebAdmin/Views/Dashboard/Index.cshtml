@@ -512,6 +512,131 @@
             color: var(--primary-brown);
             margin-right: 8px;
         }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1366px) {
+            .main-content {
+                padding: 24px 24px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 20px 20px;
+            }
+            .sidebar-header img {
+                height: 90px;
+            }
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+                padding: 16px 16px;
+            }
+            .sidebar-header {
+                padding: 16px 16px;
+            }
+            .sidebar-header img {
+                height: 70px;
+            }
+            .sidebar-menu {
+                padding: 8px 12px;
+            }
+            .menu-item {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            .sidebar-footer {
+                padding: 16px;
+            }
+            .page-title {
+                font-size: 20px;
+            }
+            .section-title {
+                font-size: 16px;
+            }
+            .section-card {
+                padding: 16px;
+            }
+            .stat-card {
+                padding: 16px;
+            }
+            .stat-value {
+                font-size: 22px;
+            }
+            .table-custom th,
+            .table-custom td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                padding: 8px 16px;
+            }
+            .sidebar-header {
+                padding: 4px 0;
+                flex-shrink: 0;
+            }
+            .sidebar-header img {
+                height: 50px;
+                margin-bottom: 0;
+            }
+            .sidebar-menu {
+                display: flex;
+                gap: 4px;
+                padding: 0;
+                margin: 0 16px;
+                flex-grow: 1;
+            }
+            .menu-item {
+                padding: 8px 12px;
+                font-size: 12px;
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+            .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .page-title {
+                font-size: 18px;
+            }
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            .filter-group {
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </head>
 <body>
@@ -558,8 +683,8 @@
 
 
         <!-- 5 Stat Cards (as in image) -->
-        <div class="row g-4 mb-4">
-            <div class="col">
+        <div class="row g-3 mb-4">
+            <div class="col-lg col-md-6 col-sm-6">
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3 class="stat-title">ĐƠN HÀNG<br>HÔM NAY</h3>
@@ -569,7 +694,7 @@
                 </div>
             </div>
             
-            <div class="col">
+            <div class="col-lg col-md-6 col-sm-6">
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3 class="stat-title">DOANH THU<br>HÔM NAY</h3>
@@ -579,7 +704,7 @@
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col-lg col-md-6 col-sm-6">
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3 class="stat-title">HOA HỒNG</h3>
@@ -589,7 +714,7 @@
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col-lg col-md-6 col-sm-6">
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3 class="stat-title">SINH VIÊN</h3>
@@ -599,7 +724,7 @@
                 </div>
             </div>
 
-            <div class="col">
+            <div class="col-lg col-md-6 col-sm-6">
                 <div class="stat-card">
                     <div class="stat-header">
                         <h3 class="stat-title">ĐÁNH GIÁ<br>TRUNG BÌNH</h3>
@@ -614,8 +739,8 @@
         </div>
 
         <!-- Middle Section -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-8">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-8 col-md-12">
                 <div class="section-card">
                     <div class="section-header">
                         <div>
@@ -634,7 +759,7 @@
                 </div>
             </div>
             
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-12">
                 <div class="section-card">
                     <h3 class="section-title mb-4">Món ăn thịnh hành</h3>
                     
@@ -669,61 +794,63 @@
         </div>
 
         <!-- Bottom Section -->
-        <div class="row g-4">
-            <div class="col-md-7">
+        <div class="row g-3">
+            <div class="col-lg-7 col-md-12">
                 <div class="section-card">
                     <div class="section-header">
                         <h3 class="section-title">Đơn hàng mới nhất</h3>
                         <a href="/Orders" class="view-all">Xem tất cả</a>
                     </div>
                     
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>MÃ ĐƠN</th>
-                                <th>SINH VIÊN</th>
-                                <th>TỔNG TIỀN</th>
-                                <th>TRẠNG THÁI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(var order in Model)
-                            {
+                    <div class="table-responsive">
+                        <table class="table-custom">
+                            <thead>
                                 <tr>
-                                    <td>#ORD-@order.Id</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="student-avatar">@order.Student.FullName.Substring(0,2).ToUpper()</div>
-                                            @order.Student.FullName
-                                        </div>
-                                    </td>
-                                    <td>@string.Format("{0:N0}đ", order.TotalPrice)</td>
-                                    <td>
-                                        @if(order.Status == "delivered")
-                                        {
-                                            <span class="badge-status badge-delivered">Đã giao</span>
-                                        }
-                                        else if(order.Status == "ready")
-                                        {
-                                            <span class="badge-status badge-ready" style="background: #DCFCE7; color: #166534;">Sẵn sàng</span>
-                                        }
-                                        else if(order.Status == "preparing")
-                                        {
-                                            <span class="badge-status badge-preparing" style="background: #DBEAFE; color: #1E40AF;">Đang chuẩn bị</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge-status badge-pending">Chờ xử lý</span>
-                                        }
-                                    </td>
+                                    <th>MÃ ĐƠN</th>
+                                    <th>SINH VIÊN</th>
+                                    <th>TỔNG TIỀN</th>
+                                    <th>TRẠNG THÁI</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach(var order in Model)
+                                {
+                                    <tr>
+                                        <td>#ORD-@order.Id</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="student-avatar">@order.Student.FullName.Substring(0,2).ToUpper()</div>
+                                                @order.Student.FullName
+                                            </div>
+                                        </td>
+                                        <td>@string.Format("{0:N0}đ", order.TotalPrice)</td>
+                                        <td>
+                                            @if(order.Status == "delivered")
+                                            {
+                                                <span class="badge-status badge-delivered">Đã giao</span>
+                                            }
+                                            else if(order.Status == "ready")
+                                            {
+                                                <span class="badge-status badge-ready" style="background: #DCFCE7; color: #166534;">Sẵn sàng</span>
+                                            }
+                                            else if(order.Status == "preparing")
+                                            {
+                                                <span class="badge-status badge-preparing" style="background: #DBEAFE; color: #1E40AF;">Đang chuẩn bị</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-status badge-pending">Chờ xử lý</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             
-            <div class="col-md-5">
+            <div class="col-lg-5 col-md-12">
                 <div class="section-card">
                     <div class="section-header">
                         <h3 class="section-title">Đánh giá gần đây</h3>

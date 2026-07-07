@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudentFood.WebAdmin")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69473e7d361aa96361341c4748730d1200a3c7ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8c228f66e138e974b0192ad246ac09432e692b7")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudentFood.WebAdmin")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudentFood.WebAdmin")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

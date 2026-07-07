@@ -1,5 +1,5 @@
-<api type="release" assembly-name="StudentFood.MobileApp" mvid="a94bd1d16c0a4aefaccd70bf8018d368">
-  <module assembly-name="StudentFood.MobileApp" mvid="a94bd1d16c0a4aefaccd70bf8018d368" mvid-bytes="0dFLqQps70qszXC/gBjTaA==">
+<api type="release" assembly-name="StudentFood.MobileApp" mvid="928dcb0205994b1aa63759a4795caefd">
+  <module assembly-name="StudentFood.MobileApp" mvid="928dcb0205994b1aa63759a4795caefd" mvid-bytes="AsuNkpkFGkumN1mkeVyu/Q==">
     <types-scratch>
       <entry key="crc64fc78ce97079b48b9/MainActivity" java-name="crc64fc78ce97079b48b9/MainActivity" managed-type-name="StudentFood.MobileApp.MainActivity" token="33554444" />
       <entry key="crc64fc78ce97079b48b9/MainApplication" java-name="crc64fc78ce97079b48b9/MainApplication" managed-type-name="StudentFood.MobileApp.MainApplication" token="33554445" />

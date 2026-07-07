@@ -8,7 +8,7 @@ public static class ApiConfig
     public const bool UseLocal = false; 
 
     // Đã sửa lại đúng định dạng (loại bỏ khoảng trắng thừa và "https://")
-    public const string NgrokHost = "nonstereotyped-biometrical-amir.ngrok-free.dev"; 
+    public const string NgrokHost = "cinnamon-atlas-rupture.ngrok-free.dev"; 
 
     public static string Host => UseLocal ? LocalHost : NgrokHost;
     public static string Scheme => UseLocal ? "http" : "https";

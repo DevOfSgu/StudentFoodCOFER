@@ -1,6 +1,6 @@
 0x43032f1d071fae0 di:66 mi:66 do:3078905 ds:10009 ddo:0 dds:0 cdo:0 cds:0 ru/Microsoft.Maui.Controls.resources
 0x46eb1581a80c6b0 di:72 mi:72 do:3138858 ds:9976 ddo:0 dds:0 cdo:0 cds:0 vi/Microsoft.Maui.Controls.resources
-0x49d4e6bf9039866 di:122 mi:122 do:5791856 ds:124834 ddo:0 dds:0 cdo:0 cds:0 StudentFood.MobileApp
+0x49d4e6bf9039866 di:122 mi:122 do:5791856 ds:124810 ddo:0 dds:0 cdo:0 cds:0 StudentFood.MobileApp
 0x517ef04e06e9f76 di:20 mi:20 do:515577 ds:24831 ddo:0 dds:0 cdo:0 cds:0 System.Net.Primitives
 0x565d18c6da3de38 di:113 mi:113 do:5383099 ds:111978 ddo:0 dds:0 cdo:0 cds:0 Xamarin.AndroidX.RecyclerView
 0x5989cb940b225a9 di:90 mi:90 do:4239493 ds:402800 ddo:0 dds:0 cdo:0 cds:0 Microsoft.Maui.dll
@@ -53,7 +53,7 @@
 0x3508234247f48404 di:88 mi:88 do:3285830 ds:880395 ddo:0 dds:0 cdo:0 cds:0 Microsoft.Maui.Controls
 0x355282fc1c909694 di:77 mi:77 do:3182188 ds:8901 ddo:0 dds:0 cdo:0 cds:0 Microsoft.Extensions.Configuration
 0x385c17636bb6fe6e di:101 mi:101 do:5174714 ds:5413 ddo:0 dds:0 cdo:0 cds:0 Xamarin.AndroidX.CustomView.dll
-0x387acab55fc6b227 di:122 mi:122 do:5791856 ds:124834 ddo:0 dds:0 cdo:0 cds:0 StudentFood.MobileApp.dll
+0x387acab55fc6b227 di:122 mi:122 do:5791856 ds:124810 ddo:0 dds:0 cdo:0 cds:0 StudentFood.MobileApp.dll
 0x3be99b43dd39dd37 di:114 mi:114 do:5495077 ds:6000 ddo:0 dds:0 cdo:0 cds:0 Xamarin.AndroidX.SavedState.SavedState.Android
 0x3c7c495f58ac5ee9 di:119 mi:119 do:5724297 ds:32195 ddo:0 dds:0 cdo:0 cds:0 Xamarin.Kotlin.StdLib
 0x3f6f5914291cdcf7 di:83 mi:83 do:3244153 ds:3003 ddo:0 dds:0 cdo:0 cds:0 Microsoft.Extensions.Hosting.Abstractions

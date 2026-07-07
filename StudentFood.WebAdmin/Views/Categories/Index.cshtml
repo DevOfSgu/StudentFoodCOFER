@@ -66,6 +66,107 @@
         .empty-state { text-align: center; padding: 60px 20px; }
         .empty-state i { font-size: 48px; color: var(--border-color); margin-bottom: 16px; }
         .empty-state p { color: var(--text-gray); font-size: 15px; }
+
+        .table-responsive-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1366px) {
+            .main-content {
+                padding: 24px 24px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+                padding: 20px 20px;
+            }
+            .page-title {
+                font-size: 20px;
+            }
+            .table-custom th,
+            .table-custom td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+                padding: 16px 16px;
+            }
+            .sidebar-header {
+                padding: 16px;
+            }
+            .sidebar-menu {
+                padding: 8px 12px;
+            }
+            .menu-item {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            .sidebar-footer {
+                padding: 16px;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                padding: 8px 16px;
+            }
+            .sidebar-header {
+                padding: 4px 0;
+            }
+            .sidebar-header img {
+                height: 40px;
+            }
+            .sidebar-menu {
+                display: flex;
+                gap: 4px;
+                padding: 0;
+                margin: 0 12px;
+                flex-grow: 1;
+            }
+            .menu-item {
+                padding: 6px 10px;
+                font-size: 11px;
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+            .sidebar-footer {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 12px;
+            }
+            .page-title {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -122,6 +223,7 @@
             }
             else
             {
+                <div class="table-responsive-wrap">
                 <table class="table-custom">
                     <thead>
                         <tr>
@@ -156,6 +258,7 @@
                         }
                     </tbody>
                 </table>
+                </div>
             }
         </div>
 
