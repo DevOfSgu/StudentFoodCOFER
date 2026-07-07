@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --bg-main: #FDF9F3;
@@ -360,54 +361,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* Mock Chart */
-        .mock-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 200px;
-            padding-top: 20px;
-        }
 
-        .bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 10%;
-        }
-
-        .bar {
-            width: 100%;
-            background-color: #FBEBDD;
-            border-radius: 6px 6px 0 0;
-            transition: all 0.3s;
-        }
-
-        .bar.active {
-            background-color: var(--primary-orange);
-            position: relative;
-        }
-
-        .bar.active::after {
-            content: attr(data-val);
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text-dark);
-            color: white;
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .bar-label {
-            margin-top: 12px;
-            font-size: 12px;
-            color: var(--text-gray);
-            font-weight: 500;
-        }
 
         /* Trending Orders */
         .trending-list {
@@ -569,23 +523,14 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
+            <a href="/Dashboard" class="menu-item active">
                 <i class="fas fa-border-all"></i> Tổng quan
             </a>
             <a href="/Orders" class="menu-item">
                 <i class="fas fa-shopping-cart"></i> Đơn hàng
             </a>
-            <a href="/Analytics" class="menu-item">
-                <i class="fas fa-chart-bar"></i> Thống kê
-            </a>
-            <a href="/Reviews" class="menu-item">
-                <i class="fas fa-comment-alt"></i> Đánh giá
-            </a>
             <a href="/Canteens" class="menu-item">
-                <i class="fas fa-users"></i> Nhân viên
-            </a>
-            <a href="/Settings" class="menu-item">
-                <i class="fas fa-cog"></i> Cài đặt
+                <i class="fas fa-store"></i> Đối tác
             </a>
         </div>
 
@@ -608,25 +553,9 @@
         <!-- Top Header -->
         <div class="top-header">
             <h2 class="page-title">Chào mừng trở lại, Quản trị viên.</h2>
-            <div class="top-actions">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Tìm kiếm dữ liệu...">
-                </div>
-                <button class="icon-btn"><i class="far fa-bell"></i></button>
-                <button class="icon-btn"><i class="far fa-question-circle"></i></button>
-            </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn-custom btn-gray">
-                <i class="fas fa-user-plus"></i> Quản lý nhân viên
-            </button>
-            <button class="btn-custom btn-brown">
-                <i class="far fa-eye"></i> Xem đơn hàng
-            </button>
-        </div>
+
 
         <!-- 5 Stat Cards (as in image) -->
         <div class="row g-4 mb-4">
@@ -698,36 +627,9 @@
                         </div>
                     </div>
                     
-                    <div class="mock-chart">
-                        @{
-                            var chartData = ViewBag.ChartData as List<decimal>;
-                            var labels = ViewBag.ChartLabels as List<string>;
-                            var maxVal = chartData != null && chartData.Any() ? chartData.Max() : 1;
-                            if(maxVal == 0) maxVal = 1;
-                        }
-                        
-                        @if(chartData != null)
-                        {
-                            for(int i = 0; i < chartData.Count; i++)
-                            {
-                                var height = (chartData[i] * 100 / maxVal);
-                                if(height < 10) height = 10;
-                                var isActive = i == chartData.Count - 1 ? "active" : ""; // Make today active
-                                var formatVal = chartData[i] >= 1000000 ? (chartData[i]/1000000).ToString("0.##") + "M" : (chartData[i]/1000).ToString("0") + "k";
-                                
-                                <div class="bar-wrapper">
-                                    @if(isActive == "active")
-                                    {
-                                        <div class="bar @isActive" style="height: @height%;" data-val="@formatVal"></div>
-                                    }
-                                    else
-                                    {
-                                        <div class="bar @isActive" style="height: @height%;"></div>
-                                    }
-                                    <div class="bar-label">@labels[i]</div>
-                                </div>
-                            }
-                        }
+                    <!-- Biểu đồ doanh thu với Chart.js -->
+                    <div style="height: 260px; position: relative;">
+                        <canvas id="revenueChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -761,9 +663,7 @@
                         }
                     </ul>
                     
-                    <button class="btn btn-outline-secondary w-100 mt-3" style="border-radius: 8px; font-weight: 600; font-size: 13px;">
-                        Xuất báo cáo
-                    </button>
+
                 </div>
             </div>
         </div>
@@ -856,5 +756,64 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(ViewBag.ChartLabels)),
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: @Html.Raw(Json.Serialize(ViewBag.ChartData)),
+                        backgroundColor: [
+                            '#FDE6C8', '#FDE6C8', '#FDE6C8', '#FDE6C8', '#FDE6C8', '#FDE6C8', '#FF8A00'
+                        ],
+                        borderColor: [
+                            'transparent','transparent','transparent','transparent','transparent','transparent','#FF8A00'
+                        ],
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return new Intl.NumberFormat('vi-VN').format(context.parsed.y) + 'đ';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F0EBE1', drawBorder: false },
+                            ticks: {
+                                font: { family: 'Plus Jakarta Sans', size: 11 },
+                                color: '#8A847E',
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+                                    if (value >= 1000) return (value / 1000).toFixed(0) + 'k';
+                                    return value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'Plus Jakarta Sans', size: 11 },
+                                color: '#8A847E'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

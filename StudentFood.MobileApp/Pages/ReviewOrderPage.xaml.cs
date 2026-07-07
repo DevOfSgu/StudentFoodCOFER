@@ -15,6 +15,22 @@ public partial class ReviewOrderPage : ContentPage
     private OrderHistoryItem? _order;
     private OrderItemSummary? _selectedFood;
     private int _rating = 5;
+    private bool _isSubmitting;
+
+    public bool IsSubmitting
+    {
+        get => _isSubmitting;
+        set
+        {
+            _isSubmitting = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsNotSubmitting));
+            OnPropertyChanged(nameof(SubmitButtonText));
+        }
+    }
+
+    public bool IsNotSubmitting => !_isSubmitting;
+    public string SubmitButtonText => _isSubmitting ? "Đang gửi..." : "Gửi đánh giá";
 
     public int OrderId
     {
@@ -137,22 +153,32 @@ public partial class ReviewOrderPage : ContentPage
             return;
         }
 
-        var result = await _orderService.SubmitReviewAsync(_order.Id, new ReviewRequest
-        {
-            StudentId = studentId,
-            FoodId = _selectedFood.FoodId,
-            Rating = Rating,
-            Comment = CommentEditor.Text?.Trim()
-        });
+        IsSubmitting = true;
 
-        if (!result.Success)
+        try
         {
-            await ThemedMessagePopupPage.ShowAsync("Không thể gửi đánh giá", result.Message ?? "Đã xảy ra lỗi.");
-            return;
+            var result = await _orderService.SubmitReviewAsync(_order.Id, new ReviewRequest
+            {
+                StudentId = studentId,
+                FoodId = _selectedFood.FoodId,
+                Rating = Rating,
+                Comment = CommentEditor.Text?.Trim()
+            });
+
+            if (!result.Success)
+            {
+                await ThemedMessagePopupPage.ShowAsync("Không thể gửi đánh giá", result.Message ?? "Đã xảy ra lỗi.");
+                return;
+            }
+
+            // Navigate back FIRST, then show popup from parent page context
+            await Shell.Current.GoToAsync("..");
+            await ThemedMessagePopupPage.ShowAsync("Đánh giá thành công", result.Message ?? "Cảm ơn bạn đã đánh giá!");
         }
-
-        await ThemedMessagePopupPage.ShowAsync("Đánh giá thành công", result.Message ?? "Cảm ơn bạn đã đánh giá!");
-        await Shell.Current.GoToAsync("..", true);
+        finally
+        {
+            IsSubmitting = false;
+        }
     }
 
     private async void OnBackClicked(object? sender, EventArgs e)

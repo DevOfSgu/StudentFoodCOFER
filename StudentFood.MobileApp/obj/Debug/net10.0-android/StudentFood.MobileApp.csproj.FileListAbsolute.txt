@@ -2691,3 +2691,4 @@ D:\Code\job\StudentFoodCOFER\StudentFood.MobileApp\bin\Debug\net10.0-android\Mic
 D:\Code\job\StudentFoodCOFER\StudentFood.MobileApp\bin\Debug\net10.0-android\Microsoft.VisualStudio.DesignTools.TapContract.dll
 D:\Code\job\StudentFoodCOFER\StudentFood.MobileApp\bin\Debug\net10.0-android\Microsoft.VisualStudio.DesignTools.XamlTapContract.dll
 D:\Code\job\StudentFoodCOFER\StudentFood.MobileApp\obj\Debug\net10.0-android\StudentF.844E658D.Up2Date
+D:\Code\job\StudentFoodCOFER\StudentFood.MobileApp\obj\Debug\net10.0-android\StudentFood.MobileApp.sourcelink.json

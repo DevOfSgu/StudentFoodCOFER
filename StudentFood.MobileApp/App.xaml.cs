@@ -9,6 +9,13 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
+		// Auto-login nếu đã có session trong Preferences
+		var userId = Preferences.Default.Get("user_id", 0);
+		if (userId > 0)
+		{
+			return new Window(new AppShell());
+		}
+
 		var navigationPage = new NavigationPage(new Pages.LoginPage())
 		{
 			BarBackgroundColor = Color.FromArgb("#FFFFFF"),

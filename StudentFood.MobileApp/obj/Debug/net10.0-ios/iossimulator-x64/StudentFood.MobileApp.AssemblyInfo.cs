@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+615e9d31a5d4ab9aa85de46f4eade9aedd692ec3")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudentFood.MobileApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -125,20 +125,20 @@ public partial class CheckoutPage : ContentPage
             return;
         }
 
-        var order = result.Payload.Order;
         CartService.Instance.ClearCart();
 
-        if (_selectedPaymentMethod == PaymentMethod.Transfer)
-        {
-            await ThemedMessagePopupPage.ShowAsync(
-                "Đã thanh toán thành công",
-                "Thanh toán chuyển khoản đã được ghi nhận. Đơn hàng đang được chuyển sang trạng thái xử lý.");
-        }
+        var title = _selectedPaymentMethod == PaymentMethod.Transfer
+            ? "Thanh toán thành công"
+            : "Đặt hàng thành công";
 
-        await Shell.Current.GoToAsync(nameof(OrderTrackingPage), new Dictionary<string, object>
-        {
-            { "OrderId", order.Id }
-        });
+        var message = _selectedPaymentMethod == PaymentMethod.Transfer
+            ? "Chuyển khoản đã được ghi nhận. Đơn hàng đang được xử lý."
+            : "Đơn hàng của bạn đã được đặt thành công. Vui lòng chờ xác nhận từ căn tin.";
+
+        await ThemedMessagePopupPage.ShowAsync(title, message);
+
+        // Về trang chủ sau khi tắt popup
+        await Shell.Current.GoToAsync("//HomePage");
     }
 
     private static async Task ShowStoreClosedPopupAsync(string canteenName)

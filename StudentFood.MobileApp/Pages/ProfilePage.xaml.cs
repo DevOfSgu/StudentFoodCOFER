@@ -46,6 +46,12 @@ public partial class ProfilePage : ContentPage
         if (!confirmed) return;
 
         _authService.Logout();
-        await Shell.Current.GoToAsync("//LoginPage");
+
+        // Thay toàn bộ MainPage để reset hoàn toàn về LoginPage
+        Application.Current!.MainPage = new NavigationPage(new LoginPage())
+        {
+            BarBackgroundColor = Color.FromArgb("#FFFFFF"),
+            BarTextColor = Color.FromArgb("#2A241F")
+        };
     }
 }

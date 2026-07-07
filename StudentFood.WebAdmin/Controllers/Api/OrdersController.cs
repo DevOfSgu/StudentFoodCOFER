@@ -151,6 +151,24 @@ public class OrdersController : ControllerBase
         return Ok(MapOrder(order, EstimateMinutes(order)));
     }
 
+    [HttpPatch("{orderId:int}/items/{orderItemId:int}/note")]
+    public async Task<IActionResult> UpdateItemNote(int orderId, int orderItemId, [FromBody] UpdateNoteRequest request)
+    {
+        var orderItem = await _context.OrderItems
+            .Include(oi => oi.Order)
+            .FirstOrDefaultAsync(oi => oi.Id == orderItemId && oi.OrderId == orderId);
+
+        if (orderItem == null)
+        {
+            return NotFound(new { message = "Không tìm thấy món trong đơn hàng." });
+        }
+
+        orderItem.Note = request.Note.Trim();
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Ghi chú đã được cập nhật." });
+    }
+
     [HttpPost("{orderId:int}/Review")]
     public async Task<IActionResult> CreateReview(int orderId, [FromBody] OrderReviewRequest request)
     {
@@ -204,6 +222,48 @@ public class OrdersController : ControllerBase
 
         return Ok(new { message = "Đánh giá đã được ghi nhận." });
     }
+    [HttpPost("{orderId:int}/ConfirmDelivery")]
+    public async Task<IActionResult> ConfirmDelivery(int orderId)
+    {
+        var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+        if (order == null)
+        {
+            return NotFound(new { message = "Không tìm thấy đơn hàng." });
+        }
+
+        if (!string.Equals(order.Status, "ready", StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new { message = "Đơn hàng chưa sẵn sàng để xác nhận giao." });
+        }
+
+        order.Status = "delivered";
+        order.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Đã xác nhận nhận hàng thành công." });
+    }
+
+    [HttpPost("{orderId:int}/Cancel")]
+    public async Task<IActionResult> CancelOrder(int orderId, [FromBody] CancelOrderRequest request)
+    {
+        var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+        if (order == null)
+        {
+            return NotFound(new { message = "Không tìm thấy đơn hàng." });
+        }
+
+        if (!string.Equals(order.Status, "pending", StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new { message = "Chỉ có thể hủy đơn hàng đang chờ xác nhận." });
+        }
+
+        order.Status = "cancelled";
+        order.CancelReason = request.Reason?.Trim() ?? string.Empty;
+        order.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Đơn hàng đã được hủy." });
+    }
 
     private async Task<Order?> LoadOrderAsync(int orderId)
     {
@@ -244,8 +304,9 @@ public class OrdersController : ControllerBase
             HasAnyReview = hasAnyReview,
             CanReview = string.Equals(order.Status, "delivered", StringComparison.OrdinalIgnoreCase),
             StatusText = GetStatusText(order.Status),
-            Items = order.OrderItems?.Select(orderItem => new OrderItemDto
+            CancelReason = order.CancelReason,                Items = order.OrderItems?.Select(orderItem => new OrderItemDto
             {
+                Id = orderItem.Id,
                 OrderId = order.Id,
                 FoodId = orderItem.FoodId,
                 FoodName = orderItem.Food?.Name ?? string.Empty,

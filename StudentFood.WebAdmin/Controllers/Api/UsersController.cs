@@ -29,9 +29,8 @@ public class UsersController : ControllerBase
         {
             Id = user.Id,
             FullName = user.FullName ?? string.Empty,
-            Email = user.Username ?? string.Empty,
-            PhoneNumber = user.PhoneNumber ?? string.Empty,
-            Username = user.Username ?? string.Empty
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber ?? string.Empty
         });
     }
 
@@ -55,14 +54,14 @@ public class UsersController : ControllerBase
             return BadRequest(new { message = "Vui lòng nhập email/MSSV." });
         }
 
-        var duplicate = await _context.Users.AnyAsync(other => other.Id != id && other.Username == email);
+        var duplicate = await _context.Users.AnyAsync(other => other.Id != id && other.Email == email);
         if (duplicate)
         {
             return BadRequest(new { message = "Email/MSSV này đã được sử dụng." });
         }
 
         user.FullName = request.FullName.Trim();
-        user.Username = email;
+        user.Email = email;
         user.PhoneNumber = request.PhoneNumber?.Trim();
 
         await _context.SaveChangesAsync();
@@ -71,9 +70,8 @@ public class UsersController : ControllerBase
         {
             Id = user.Id,
             FullName = user.FullName ?? string.Empty,
-            Email = user.Username ?? string.Empty,
-            PhoneNumber = user.PhoneNumber ?? string.Empty,
-            Username = user.Username ?? string.Empty
+            Email = user.Email ?? string.Empty,
+            PhoneNumber = user.PhoneNumber ?? string.Empty
         });
     }
 }

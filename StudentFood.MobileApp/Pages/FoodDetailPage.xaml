@@ -10,8 +10,16 @@
         
         <!-- Image & Back Button -->
         <Grid HeightRequest="300">
-            <Image Source="{Binding Food.FoodImageSource}" Aspect="AspectFill" />
-            <BoxView Color="Black" Opacity="0.2" />
+            <Border StrokeThickness="0" BackgroundColor="#EFE7DE">
+                <Grid>
+                    <Image Source="{Binding Food.FullImageUrl}" Aspect="AspectFill" />
+                    <!-- Placeholder khi chưa có ảnh hoặc ảnh lỗi -->
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" IsVisible="{Binding Food.HasNoImage}">
+                        <Label Text="&#xe2c7;" FontFamily="MaterialSymbolsOutlined" FontSize="48" TextColor="#B4AAA0" HorizontalOptions="Center" />
+                        <Label Text="Chưa có ảnh" FontFamily="Roboto" FontSize="12" TextColor="#B4AAA0" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
             
             <Border HorizontalOptions="Start" VerticalOptions="Start" Margin="20,40,0,0"
                     BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24"
@@ -72,7 +80,7 @@
                     
                     <Label Text="Ghi chú thêm" FontFamily="RobotoBold" FontSize="18" TextColor="#1F1B16" FontAttributes="Bold" Margin="0,8,0,0" />
                     <Border Stroke="#E8D8C6" StrokeShape="RoundRectangle 18" BackgroundColor="#FFFDFC" Padding="14,6">
-                        <Editor Placeholder="Thêm ít đá, không hành..." FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" HeightRequest="80" />
+                        <Editor x:Name="NoteEditor" Placeholder="Thêm ít đá, không hành..." FontFamily="Roboto" TextColor="#1F1B16" PlaceholderColor="#B4AAA0" HeightRequest="80" />
                     </Border>
                 </VerticalStackLayout>
             </Border>

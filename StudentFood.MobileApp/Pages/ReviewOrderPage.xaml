@@ -97,7 +97,22 @@
             <Border.Shadow>
                 <Shadow Brush="Black" Offset="0,-4" Opacity="0.05" Radius="10" />
             </Border.Shadow>
-            <Button Text="Gửi đánh giá" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="56" Clicked="OnSubmitClicked" />
+            <Grid HeightRequest="56">
+                <Button Text="{Binding SubmitButtonText}"
+                        BackgroundColor="#FF8A00"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="56"
+                        IsEnabled="{Binding IsNotSubmitting}"
+                        Clicked="OnSubmitClicked" />
+                <ActivityIndicator IsVisible="{Binding IsSubmitting}"
+                                     IsRunning="{Binding IsSubmitting}"
+                                     Color="White"
+                                     HeightRequest="28"
+                                     WidthRequest="28"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center" />
+            </Grid>
         </Border>
     </Grid>
 </ContentPage>

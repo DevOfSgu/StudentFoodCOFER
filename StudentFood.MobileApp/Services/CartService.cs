@@ -29,16 +29,21 @@ public class CartService
         return Items.Any(i => i.Food.Canteen != null && i.Food.Canteen.Id != canteenId);
     }
 
-    public void AddToCart(FoodItem food, int quantity = 1)
+    public void AddToCart(FoodItem food, int quantity = 1, string? note = null)
     {
         var existingItem = Items.FirstOrDefault(i => i.Food.Id == food.Id);
         if (existingItem != null)
         {
             existingItem.Quantity += quantity;
+            // Cập nhật ghi chú nếu có ghi chú mới
+            if (!string.IsNullOrWhiteSpace(note))
+            {
+                existingItem.Note = note;
+            }
         }
         else
         {
-            Items.Add(new CartItem { Food = food, Quantity = quantity });
+            Items.Add(new CartItem { Food = food, Quantity = quantity, Note = note ?? string.Empty });
         }
     }
 

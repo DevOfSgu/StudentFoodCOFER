@@ -14,15 +14,12 @@ public class FoodItem
     public CanteenInfo? Canteen { get; set; }
     public double AverageRating { get; set; }
 
+    public bool HasNoImage => string.IsNullOrWhiteSpace(FullImageUrl);
     public string CanteenName => Canteen?.Name ?? "Căn tin";
     public string CanteenStatus => Canteen?.Status ?? "open";
     public bool IsCanteenOpen => string.Equals(CanteenStatus, "open", StringComparison.OrdinalIgnoreCase);
     public string CategoryName => Category?.Name ?? string.Empty;
     public string DisplayPrice => CartService.FormatCurrency(Price);
-    public ImageSource FoodImageSource =>
-        string.IsNullOrWhiteSpace(FullImageUrl)
-            ? ImageSource.FromFile("logo.png")
-            : ImageSource.FromUri(new Uri(FullImageUrl));
     public string FullImageUrl =>
         string.IsNullOrWhiteSpace(ImageUrl)
             ? string.Empty

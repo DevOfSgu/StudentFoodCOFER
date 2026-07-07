@@ -35,9 +35,12 @@ public class CartItem : INotifyPropertyChanged
             {
                 _note = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasNote));
             }
         }
     }
+
+    public bool HasNote => !string.IsNullOrWhiteSpace(Note);
 
     public decimal TotalPrice => Food.Price * Quantity;
     public string DisplayTotalPrice => CartService.FormatCurrency(TotalPrice);

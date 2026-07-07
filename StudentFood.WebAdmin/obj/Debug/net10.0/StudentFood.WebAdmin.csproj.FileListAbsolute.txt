@@ -651,3 +651,4 @@ D:\Code\job\StudentFoodCOFER\StudentFood.WebAdmin\obj\Debug\net10.0\refint\Stude
 D:\Code\job\StudentFoodCOFER\StudentFood.WebAdmin\obj\Debug\net10.0\StudentFood.WebAdmin.pdb
 D:\Code\job\StudentFoodCOFER\StudentFood.WebAdmin\obj\Debug\net10.0\StudentFood.WebAdmin.genruntimeconfig.cache
 D:\Code\job\StudentFoodCOFER\StudentFood.WebAdmin\obj\Debug\net10.0\ref\StudentFood.WebAdmin.dll
+D:\Code\job\StudentFoodCOFER\StudentFood.WebAdmin\obj\Debug\net10.0\StudentFood.WebAdmin.sourcelink.json

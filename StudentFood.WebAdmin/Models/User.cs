@@ -10,7 +10,8 @@ namespace StudentFood.WebAdmin.Models
         public int Id { get; set; }
         
         [Required]
-        public string Username { get; set; } // MSSV đối với sinh viên, Email/Username đối với Canteen/Admin
+        [EmailAddress]
+        public string Email { get; set; } // Email của người dùng
         
         [Required]
         public string Password { get; set; }

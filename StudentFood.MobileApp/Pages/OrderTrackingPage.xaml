@@ -30,8 +30,19 @@
             </Label>
         </Grid>
 
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="20,0,20,32" Spacing="20">
+        <ScrollView Grid.Row="1">                <VerticalStackLayout Padding="20,0,20,32" Spacing="20">
+
+                <!-- Cancel Reason Banner (when order is cancelled) -->
+                <Border BackgroundColor="#FFF0F0" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="16" IsVisible="{Binding IsOrderCancelled}">
+                    <VerticalStackLayout Spacing="6">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="&#xe5c9;" FontFamily="MaterialSymbolsOutlined" FontSize="20" TextColor="#D14343" VerticalOptions="Center" />
+                            <Label Text="Đơn hàng đã bị hủy" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" TextColor="#D14343" />
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding CurrentOrder.CancelReason, StringFormat='Lý do: {0}'}" FontFamily="Roboto" FontSize="13" TextColor="#8A5A5A" IsVisible="{Binding HasCancelReason}" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Border>
+
                 <Border BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 24" Padding="20">
                     <VerticalStackLayout Spacing="12">
                         <HorizontalStackLayout Spacing="8">
@@ -45,21 +56,23 @@
                         <Label Text="{Binding CurrentOrder.DisplayDeliveryEta, StringFormat='Dự kiến giao: {0}'}" FontFamily="Roboto" FontSize="14" TextColor="#5B5147" />
                         <ProgressBar Progress="{Binding CurrentOrder.ProgressValue}" ProgressColor="#FF8A00" BackgroundColor="#EFE7DE" HeightRequest="8" />
 
-                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding StatusSteps}" Spacing="10">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BackgroundColor="#F7F3EE" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="10" WidthRequest="112">
-                                        <VerticalStackLayout Spacing="4">
-                                            <Border BackgroundColor="{Binding CircleColor}" StrokeThickness="0" StrokeShape="RoundRectangle 999" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center">
-                                                <Label Text="&#xe876;" FontFamily="MaterialSymbolsOutlined" FontSize="12" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
-                                            </Border>
-                                            <Label Text="{Binding Title}" FontFamily="RobotoBold" FontSize="11" FontAttributes="Bold" TextColor="{Binding TextColor}" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
-                                            <Label Text="{Binding Description}" FontFamily="Roboto" FontSize="10" TextColor="#8A847E" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
-                                        </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </HorizontalStackLayout>
+                        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                            <HorizontalStackLayout BindableLayout.ItemsSource="{Binding StatusSteps}" Spacing="10">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BackgroundColor="#F7F3EE" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="10" WidthRequest="104">
+                                            <VerticalStackLayout Spacing="4">
+                                                <Border BackgroundColor="{Binding CircleColor}" StrokeThickness="0" StrokeShape="RoundRectangle 999" HeightRequest="22" WidthRequest="22" HorizontalOptions="Center">
+                                                    <Label Text="&#xe876;" FontFamily="MaterialSymbolsOutlined" FontSize="12" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                </Border>
+                                                <Label Text="{Binding Title}" FontFamily="RobotoBold" FontSize="11" FontAttributes="Bold" TextColor="{Binding TextColor}" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
+                                                <Label Text="{Binding Description}" FontFamily="Roboto" FontSize="10" TextColor="#8A847E" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </HorizontalStackLayout>
+                        </ScrollView>
 
                         <Grid ColumnDefinitions="*,Auto">
                             <Label Text="{Binding CurrentOrder.PrimaryItemSummary}" FontFamily="RobotoBold" FontSize="15" FontAttributes="Bold" TextColor="#1F1B16" />
@@ -99,6 +112,43 @@
                                         <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
                                             <Label Text="{Binding FoodName}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#1F1B16" MaxLines="1" LineBreakMode="TailTruncation" />
                                             <Label Text="{Binding Quantity, StringFormat='Số lượng: {0}'}" FontFamily="Roboto" FontSize="12" TextColor="#8A847E" />
+
+                                            <!-- Note display (when NOT editing) -->
+                                            <HorizontalStackLayout Spacing="6" IsVisible="{Binding IsNotEditingNote}">
+                                                <Label Text="{Binding Note, StringFormat='📝 {0}'}" FontFamily="Roboto" FontSize="11" TextColor="#FF8A00" LineBreakMode="TailTruncation" MaxLines="1" IsVisible="{Binding HasNote}" VerticalOptions="Center" />
+                                                <Label Text="{Binding NoteEditButtonText}"
+                                                       FontFamily="RobotoBold" FontSize="10"
+                                                       TextColor="#A76020" VerticalOptions="Center">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditNoteCommand}" CommandParameter="{Binding .}" />
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </HorizontalStackLayout>
+
+                                            <!-- Note editing (when editing) -->
+                                            <VerticalStackLayout Spacing="6" IsVisible="{Binding IsEditingNote}">
+                                                <Border BackgroundColor="#FFFDFC" Stroke="#E8D8C6" StrokeShape="RoundRectangle 10" Padding="8,4">
+                                                    <Entry Text="{Binding EditableNote, Mode=TwoWay}"
+                                                           Placeholder="Ghi chú cho món này..."
+                                                           FontFamily="Roboto"
+                                                           FontSize="12"
+                                                           TextColor="#1F1B16"
+                                                           PlaceholderColor="#B4AAA0"
+                                                           BackgroundColor="Transparent" />
+                                                </Border>
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Label Text="Lưu" FontFamily="RobotoBold" FontSize="11" TextColor="#FF8A00">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SaveNoteCommand}" CommandParameter="{Binding .}" />
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <Label Text="Hủy" FontFamily="Roboto" FontSize="11" TextColor="#8A847E">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CancelEditNoteCommand}" CommandParameter="{Binding .}" />
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
                                         </VerticalStackLayout>
                                         <VerticalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center">
                                             <Label Text="{Binding DisplayPrice}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#FF8A00" HorizontalOptions="End" />
@@ -128,7 +178,23 @@
                 <Shadow Brush="Black" Offset="0,-4" Opacity="0.05" Radius="10" />
             </Border.Shadow>
             <VerticalStackLayout Spacing="12">
-                <Button Text="Làm mới trạng thái" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="52" Command="{Binding RefreshCommand}" />
+                <Button Text="Đã nhận hàng"
+                        BackgroundColor="#059669"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="52"
+                        FontFamily="RobotoBold"
+                        FontSize="16"
+                        Command="{Binding ConfirmDeliveryCommand}"
+                        IsVisible="{Binding CanConfirmDelivery}" />
+                <Button Text="Hủy đơn hàng"
+                        BackgroundColor="#FFF0F0"
+                        TextColor="#D14343"
+                        CornerRadius="16"
+                        HeightRequest="52"
+                        FontFamily="RobotoBold"
+                        Command="{Binding CancelOrderCommand}"
+                        IsVisible="{Binding CanCancelOrder}" />
                 <Button Text="Quay về đơn hàng" BackgroundColor="#F7F3EE" TextColor="#5B5147" CornerRadius="16" HeightRequest="52" Clicked="OnBackClicked" />
             </VerticalStackLayout>
         </Border>

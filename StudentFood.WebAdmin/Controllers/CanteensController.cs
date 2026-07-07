@@ -20,9 +20,22 @@ namespace StudentFood.WebAdmin.Controllers
         }
 
         // GET: Canteens
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var canteens = await _context.Canteens.Include(c => c.Owner).ToListAsync();
+            const int pageSize = 10;
+
+            var query = _context.Canteens.Include(c => c.Owner).AsQueryable();
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+
+            var canteens = await query
+                .OrderBy(c => c.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             var statsMap = await _context.Orders
                 .Where(o => o.Status == "delivered")
@@ -31,8 +44,8 @@ namespace StudentFood.WebAdmin.Controllers
                 {
                     CanteenId = g.Key,
                     TotalOrders = g.Count(),
-                    TotalRevenue = g.Sum(o => o.Subtotal - o.CommissionAmount),
-                    TotalCommission = g.Sum(o => o.CommissionAmount)
+                    TotalRevenue = g.Sum(o => (decimal?)o.Subtotal - o.CommissionAmount) ?? 0,
+                    TotalCommission = g.Sum(o => (decimal?)o.CommissionAmount) ?? 0
                 })
                 .ToDictionaryAsync(x => x.CanteenId, x => new CanteenStatsDto
                 {
@@ -42,6 +55,8 @@ namespace StudentFood.WebAdmin.Controllers
                 });
 
             ViewBag.StatsMap = statsMap;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
             return View(canteens);
         }
 

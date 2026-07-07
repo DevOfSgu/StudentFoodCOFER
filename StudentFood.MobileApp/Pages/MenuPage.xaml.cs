@@ -14,7 +14,7 @@ public partial class MenuPage : ContentPage
     private string _searchQuery = string.Empty;
     private string _selectedCategory = "all";
     private int _currentPage = 1;
-    private const int PageSize = 10;
+    private const int PageSize = 20;
 
     public ObservableCollection<FoodItem> Foods { get; } = [];
     public ICommand RefreshCommand { get; }
@@ -55,8 +55,8 @@ public partial class MenuPage : ContentPage
     public MenuPage()
     {
         InitializeComponent();
-        BindingContext = this;
 
+        // Tạo commands TRƯỚC khi set BindingContext để bindings resolve đúng
         RefreshCommand = new Command(async () => await LoadDataAsync());
         FoodTappedCommand = new Command<FoodItem>(async (food) => await OnFoodTappedAsync(food));
         SelectAllCommand = new Command(() => ApplyCategory("all"));
@@ -65,6 +65,8 @@ public partial class MenuPage : ContentPage
         SelectDrinkCommand = new Command(() => ApplyCategory("drink"));
         PreviousPageCommand = new Command(PreviousPage, () => _currentPage > 1);
         NextPageCommand = new Command(NextPage, () => _currentPage < TotalPages);
+
+        BindingContext = this;
     }
 
     protected override async void OnAppearing()
@@ -185,13 +187,13 @@ public partial class MenuPage : ContentPage
             return true;
         }
 
-        var combinedText = $"{Normalize(food.CategoryName)} {Normalize(food.Name)} {Normalize(food.Description)}";
+        var categoryName = Normalize(food.CategoryName);
 
         return category switch
         {
-            "rice" => combinedText.Contains("com", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("rice", StringComparison.OrdinalIgnoreCase),
-            "noodle" => combinedText.Contains("mi", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("pho", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("noodle", StringComparison.OrdinalIgnoreCase),
-            "drink" => combinedText.Contains("do uong", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("drink", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("juice", StringComparison.OrdinalIgnoreCase) || combinedText.Contains("nuoc", StringComparison.OrdinalIgnoreCase),
+            "rice" => categoryName.Contains("com") || categoryName.Contains("rice"),
+            "noodle" => categoryName.Contains("mi") || categoryName.Contains("pho") || categoryName.Contains("noodle"),
+            "drink" => categoryName.Contains("thuc uong") || categoryName.Contains("do uong") || categoryName.Contains("nuoc uong") || categoryName.Contains("drink") || categoryName.Contains("nuoc"),
             _ => true
         };
     }

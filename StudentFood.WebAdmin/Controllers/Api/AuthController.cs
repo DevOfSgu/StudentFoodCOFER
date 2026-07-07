@@ -27,7 +27,7 @@ namespace StudentFood.WebAdmin.Controllers.Api
             }
 
             // Kiểm tra xem Email đã tồn tại chưa
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Email);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (existingUser != null)
             {
                 return BadRequest(new { message = "Email này đã được đăng ký!" });
@@ -38,7 +38,7 @@ namespace StudentFood.WebAdmin.Controllers.Api
 
             var newUser = new User
             {
-                Username = request.Email,
+                Email = request.Email,
                 Password = passwordHash,
                 FullName = request.FullName,
                 PhoneNumber = request.PhoneNumber,
@@ -57,7 +57,7 @@ namespace StudentFood.WebAdmin.Controllers.Api
                 user = new
                 {
                     newUser.Id,
-                    newUser.Username,
+                    newUser.Email,
                     newUser.FullName,
                     newUser.Role,
                     newUser.PhoneNumber
@@ -75,7 +75,7 @@ namespace StudentFood.WebAdmin.Controllers.Api
             }
 
             // Tìm user theo email
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             
             // Kiểm tra user có tồn tại và mật khẩu có khớp không
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
@@ -95,7 +95,7 @@ namespace StudentFood.WebAdmin.Controllers.Api
                 user = new
                 {
                     user.Id,
-                    user.Username,
+                    user.Email,
                     user.FullName,
                     user.Role,
                     user.AvatarUrl,

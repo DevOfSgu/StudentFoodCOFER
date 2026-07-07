@@ -1,0 +1,613 @@
+@model List<StudentFood.WebAdmin.Models.Food>
+@{
+    Layout = null;
+    ViewData["Title"] = "Quản lý Món ăn";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - StudentFood COFER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #F9F7F4;
+            --bg-sidebar: #FAF8F5;
+            --text-dark: #2A241F;
+            --text-gray: #8A847E;
+            --primary-orange: #FF8A00;
+            --primary-brown: #A05A19;
+            --bg-card: #FFFFFF;
+            --border-color: #EBE5DE;
+            --success-green: #22C55E;
+            --bg-hover: #EFEAE4;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 30px 24px;
+            text-align: center;
+        }
+
+        .sidebar-header img {
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            padding: 10px 16px;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .menu-item i {
+            width: 24px;
+            font-size: 16px;
+            color: var(--text-gray);
+            transition: color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: var(--bg-hover);
+        }
+
+        .menu-item.active {
+            background-color: #EFE4D6;
+            color: var(--text-dark);
+        }
+
+        .menu-item.active i {
+            color: var(--text-dark);
+        }
+
+        .sidebar-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .user-info h6 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .user-info p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 130px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .logout-btn i {
+            margin-right: 10px;
+        }
+
+        .logout-btn:hover {
+            color: var(--text-dark);
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px 40px;
+            min-height: 100vh;
+            background-color: #FAFAFA;
+        }
+
+        .top-bar-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+            color: #92400E;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            margin: 4px 0 0;
+        }
+
+        .add-food-btn {
+            background: #B45309;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-food-btn:hover {
+            background: #92400E;
+            color: white;
+        }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card-clean {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #EAEAEA;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            flex: 1;
+        }
+
+        .stat-card-clean .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .stat-card-clean .stat-title {
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 0;
+            text-transform: none;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .stat-card-clean .stat-value {
+            font-size: 28px;
+            color: #111;
+            font-weight: 800;
+        }
+
+        /* Table card */
+        .section-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+        }
+
+        .search-bar input {
+            background: white;
+            border: 1px solid #EAEAEA;
+            border-radius: 12px;
+            padding: 10px 16px 10px 40px;
+            width: 280px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .search-bar input:focus {
+            border-color: #B45309;
+        }
+
+        /* Table */
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-custom th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-custom td {
+            padding: 14px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-custom tr:hover td {
+            background: #FFFBF5;
+        }
+
+        .food-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: var(--bg-main);
+        }
+
+        .food-img-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-size: 18px;
+        }
+
+        .food-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .food-desc {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: 2px;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .cat-badge {
+            background: #F7F3EE;
+            color: #5B4A3A;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: #B45309;
+        }
+
+        .badge-available {
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge-unavailable {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .btn-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-dark);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-hover);
+            border-color: #B45309;
+            color: #B45309;
+        }
+
+        .btn-icon-danger:hover {
+            background: #FEE2E2;
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header" style="text-align: center; padding: 20px 24px;">
+            <img src="/logo.png" alt="Logo" style="height: 120px; object-fit: contain; margin-bottom: 10px;">
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/CanteenDashboard" class="menu-item">
+                <i class="fas fa-border-all"></i> Tổng quan
+            </a>
+            <a href="/CanteenDashboard/Foods" class="menu-item active">
+                <i class="fas fa-utensils"></i> Quản lý Món ăn
+            </a>
+            <a href="/CanteenDashboard/Reviews" class="menu-item">
+                <i class="fas fa-star"></i> Đánh giá
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="/img/avatar_canteen.png" alt="Canteen" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Canteen&background=FFF3E0&color=FF8A00'">
+                <div class="user-info">
+                    <h6>@Context.Session.GetString("UserName")</h6>
+                    <p>@ViewBag.CanteenName</p>
+                </div>
+            </div>
+            <a href="/Account/Logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar-custom">
+            <div>
+                <h2 class="page-title">Quản lý Món ăn</h2>
+                <p class="page-subtitle">Quản lý thực đơn của @ViewBag.CanteenName</p>
+            </div>
+            <a href="/CanteenDashboard/CreateFood" class="add-food-btn">
+                <i class="fas fa-plus"></i> Thêm món ăn
+            </a>
+        </div>
+
+        <!-- Stats row -->
+        @{
+            var totalFoods = Model.Count;
+            var availableFoods = Model.Count(f => f.IsAvailable);
+            var unavailableFoods = totalFoods - availableFoods;
+        }
+        <div class="stats-row">
+            <div class="stat-card-clean">
+                <div class="stat-header">
+                    <i class="fas fa-utensils" style="color: #B45309; font-size: 18px;"></i>
+                    <h3 class="stat-title">TỔNG SỐ MÓN</h3>
+                </div>
+                <div class="stat-value">@totalFoods</div>
+            </div>
+            <div class="stat-card-clean">
+                <div class="stat-header">
+                    <i class="fas fa-check-circle" style="color: #10B981; font-size: 18px;"></i>
+                    <h3 class="stat-title">ĐANG BÁN</h3>
+                </div>
+                <div class="stat-value" style="color: #16A34A;">@availableFoods</div>
+            </div>
+            <div class="stat-card-clean">
+                <div class="stat-header">
+                    <i class="fas fa-pause-circle" style="color: #EF4444; font-size: 18px;"></i>
+                    <h3 class="stat-title">TẠM DỪNG</h3>
+                </div>
+                <div class="stat-value" style="color: #DC2626;">@unavailableFoods</div>
+            </div>
+            <div class="stat-card-clean">
+                <div class="stat-header">
+                    <i class="fas fa-tags" style="color: #F59E0B; font-size: 18px;"></i>
+                    <h3 class="stat-title">DANH MỤC</h3>
+                </div>
+                <div class="stat-value" style="color: #B45309;">@Model.Select(f => f.CategoryId).Distinct().Count()</div>
+            </div>
+        </div>
+
+        <!-- Food list card -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Danh sách món ăn</h3>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm theo tên món...">
+                </div>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="empty-state">
+                    <i class="fas fa-utensils"></i>
+                    <p>Chưa có món ăn nào. <a href="/CanteenDashboard/CreateFood" style="color: #B45309; font-weight: 700;">Thêm món ngay!</a></p>
+                </div>
+            }
+            else
+            {
+                <div style="overflow-x: auto;">
+                    <table class="table-custom" id="foodsTable">
+                        <thead>
+                            <tr>
+                                <th style="width:50px">#</th>
+                                <th>Món ăn</th>
+                                <th>Danh mục</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th style="text-align:right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="color: var(--text-gray); font-size: 13px; font-weight: 600;">@item.Id</td>
+                                    <td>
+                                        <div style="display:flex; align-items:center; gap:12px;">
+                                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                            {
+                                                <img src="@item.ImageUrl" alt="@item.Name" class="food-img" />
+                                            }
+                                            else
+                                            {
+                                                <div class="food-img-placeholder"><i class="fas fa-image"></i></div>
+                                            }
+                                            <div>
+                                                <div class="food-name">@item.Name</div>
+                                                @if (!string.IsNullOrEmpty(item.Description))
+                                                {
+                                                    <div class="food-desc">@item.Description</div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="cat-badge">@(item.Category?.Name ?? "—")</span></td>
+                                    <td class="price-tag">@item.Price.ToString("N0")đ</td>
+                                    <td>
+                                        @if (item.IsAvailable)
+                                        {
+                                            <span class="badge-available"><i class="fas fa-check-circle"></i> Đang bán</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge-unavailable"><i class="fas fa-pause-circle"></i> Tạm dừng</span>
+                                        }
+                                    </td>
+                                    <td style="color: var(--text-gray); font-size: 13px;">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <div class="action-group">
+                                            <a href="/CanteenDashboard/EditFood/@item.Id" class="btn-icon" title="Sửa"><i class="fas fa-pen"></i></a>
+                                            <a href="/CanteenDashboard/DeleteFood/@item.Id" class="btn-icon btn-icon-danger" title="Xóa"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('searchInput')?.addEventListener('input', function () {
+            const q = this.value.toLowerCase();
+            document.querySelectorAll('#foodsTable tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

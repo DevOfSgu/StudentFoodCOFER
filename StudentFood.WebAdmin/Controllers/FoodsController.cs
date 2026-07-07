@@ -20,10 +20,27 @@ namespace StudentFood.WebAdmin.Controllers
         }
 
         // GET: Foods
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var applicationDbContext = _context.Foods.Include(f => f.Canteen).Include(f => f.Category);
-            return View(await applicationDbContext.ToListAsync());
+            const int pageSize = 15;
+
+            var query = _context.Foods.Include(f => f.Canteen).Include(f => f.Category).AsQueryable();
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+
+            var foods = await query
+                .OrderByDescending(f => f.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(foods);
         }
 
         // GET: Foods/Details/5
@@ -59,10 +76,14 @@ namespace StudentFood.WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CanteenId,CategoryId,Name,Description,Price,ImageUrl,IsAvailable,CreatedAt")] Food food)
+        public async Task<IActionResult> Create([Bind("Id,CanteenId,CategoryId,Name,Description,Price,ImageUrl,IsAvailable,CreatedAt")] Food food, IFormFile? imageFile)
         {
             if (ModelState.IsValid)
             {
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    food.ImageUrl = await SaveFoodImageAsync(imageFile);
+                }
                 _context.Add(food);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +116,7 @@ namespace StudentFood.WebAdmin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CanteenId,CategoryId,Name,Description,Price,ImageUrl,IsAvailable,CreatedAt")] Food food)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CanteenId,CategoryId,Name,Description,Price,ImageUrl,IsAvailable,CreatedAt")] Food food, IFormFile? imageFile)
         {
             if (id != food.Id)
             {
@@ -106,6 +127,19 @@ namespace StudentFood.WebAdmin.Controllers
             {
                 try
                 {
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        food.ImageUrl = await SaveFoodImageAsync(imageFile);
+                    }
+                    else
+                    {
+                        var existing = await _context.Foods.AsNoTracking().FirstOrDefaultAsync(f => f.Id == id);
+                        if (existing != null)
+                        {
+                            food.ImageUrl = existing.ImageUrl;
+                        }
+                    }
+
                     _context.Update(food);
                     await _context.SaveChangesAsync();
                 }
@@ -165,6 +199,25 @@ namespace StudentFood.WebAdmin.Controllers
         private bool FoodExists(int id)
         {
             return _context.Foods.Any(e => e.Id == id);
+        }
+
+        private async Task<string?> SaveFoodImageAsync(IFormFile imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+                return null;
+
+            var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "foods");
+            Directory.CreateDirectory(uploadsDir);
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            var filePath = Path.Combine(uploadsDir, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return "/uploads/foods/" + fileName;
         }
     }
 }

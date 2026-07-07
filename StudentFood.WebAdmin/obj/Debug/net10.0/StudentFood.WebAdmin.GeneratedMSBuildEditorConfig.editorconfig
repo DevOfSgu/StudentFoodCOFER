@@ -35,8 +35,28 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/CreateFood.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxDcmVhdGVGb29kLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/DeleteFood.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxEZWxldGVGb29kLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/EditFood.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxFZGl0Rm9vZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/Foods.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxGb29kcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/CanteenDashboard/Reviews.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FudGVlbkRhc2hib2FyZFxSZXZpZXdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/Canteens/Create.cshtml]
@@ -109,6 +129,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Code/job/StudentFoodCOFER/StudentFood.WebAdmin/Views/Shared/Error.cshtml]

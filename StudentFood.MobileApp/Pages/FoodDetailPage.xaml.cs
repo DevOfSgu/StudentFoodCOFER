@@ -62,13 +62,19 @@ public partial class FoodDetailPage : ContentPage
             cart.ClearCart();
         }
 
-        cart.AddToCart(Food, Quantity);
+        // Capture food info before navigation (page may be disposed after GoToAsync)
+        var foodName = Food.Name;
+        var qty = Quantity;
+        var note = NoteEditor.Text?.Trim();
+
+        cart.AddToCart(Food, qty, note);
+
+        // Navigate back FIRST, then show popup from the parent page's context
+        await Shell.Current.GoToAsync("..");
 
         await ThemedMessagePopupPage.ShowAsync(
             "Đã thêm vào giỏ hàng",
-            $"Đã thêm {Quantity}x \"{Food.Name}\" vào giỏ hàng.");
-
-        await Shell.Current.GoToAsync("..");
+            $"Đã thêm {qty}x \"{foodName}\" vào giỏ hàng.");
     }
 
     private void OnIncreaseQuantityClicked(object? sender, EventArgs e)

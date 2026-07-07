@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using StudentFood.MobileApp.Services;
 
 namespace StudentFood.MobileApp.Models;
@@ -27,8 +29,13 @@ public class ReviewRequest
     public string? Comment { get; set; }
 }
 
-public class OrderItemSummary
+public class OrderItemSummary : INotifyPropertyChanged
 {
+    private bool _isEditingNote;
+    private string _editableNote = string.Empty;
+    private string _note = string.Empty;
+
+    public int Id { get; set; }
     public int OrderId { get; set; }
     public int FoodId { get; set; }
     public string FoodName { get; set; } = string.Empty;
@@ -37,7 +44,59 @@ public class OrderItemSummary
     public decimal PriceAtOrder { get; set; }
     public bool HasReview { get; set; }
     public bool CanReview { get; set; }
-    public string Note { get; set; } = string.Empty;
+
+    public string Note
+    {
+        get => _note;
+        set
+        {
+            if (_note != value)
+            {
+                _note = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasNote));
+                OnPropertyChanged(nameof(NoteEditButtonText));
+            }
+        }
+    }
+
+    public bool HasNote => !string.IsNullOrWhiteSpace(Note);
+
+    public bool IsEditingNote
+    {
+        get => _isEditingNote;
+        set
+        {
+            if (_isEditingNote != value)
+            {
+                _isEditingNote = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotEditingNote));
+            }
+        }
+    }
+
+    public bool IsNotEditingNote => !_isEditingNote;
+    public string NoteEditButtonText => string.IsNullOrWhiteSpace(Note) ? "+ Ghi chú" : "Sửa";
+
+    public string EditableNote
+    {
+        get => _editableNote;
+        set
+        {
+            if (_editableNote != value)
+            {
+                _editableNote = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 
     public string DisplayPrice => CartService.FormatCurrency(PriceAtOrder);
     public string FullImageUrl =>
@@ -66,6 +125,7 @@ public class OrderHistoryItem
     public bool CanReview { get; set; }
     public bool HasAnyReview { get; set; }
     public string StatusText { get; set; } = string.Empty;
+    public string? CancelReason { get; set; }
     public List<OrderItemSummary> Items { get; set; } = [];
 
     public string OrderNumberDisplay => $"#{Id:D4}";

@@ -34,18 +34,19 @@ public partial class ThemedConfirmPopupPage : ContentPage
     {
         var popup = new ThemedConfirmPopupPage(titleText, messageText, cancelText, confirmText);
         await Shell.Current.Navigation.PushModalAsync(popup, animated: false);
-        return await popup._result.Task;
+        var result = await popup._result.Task;
+        // Tắt modal sau khi task hoàn tất, tránh xung đột navigation
+        await Shell.Current.Navigation.PopModalAsync(animated: false);
+        return result;
     }
 
-    private async void OnCancelClicked(object sender, EventArgs e)
+    private void OnCancelClicked(object sender, EventArgs e)
     {
         _result.TrySetResult(false);
-        await Shell.Current.Navigation.PopModalAsync(animated: false);
     }
 
-    private async void OnConfirmClicked(object sender, EventArgs e)
+    private void OnConfirmClicked(object sender, EventArgs e)
     {
         _result.TrySetResult(true);
-        await Shell.Current.Navigation.PopModalAsync(animated: false);
     }
 }

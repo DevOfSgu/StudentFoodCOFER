@@ -508,6 +508,107 @@
             border-radius: 20px;
             font-weight: 600;
             font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Cancel button */
+        .btn-cancel {
+            background: white;
+            border: 1px solid #FCA5A5;
+            color: #DC2626;
+            white-space: nowrap;
+            flex: 1;
+            padding: 10px 14px;
+        }
+        .btn-cancel:hover {
+            background: #FEE2E2;
+            border-color: #DC2626;
+            color: #B91C1C;
+        }
+
+        /* Cancel Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            width: 420px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .modal-box h3 {
+            margin: 0 0 8px;
+            font-weight: 800;
+            font-size: 18px;
+            color: #DC2626;
+        }
+        .modal-box p {
+            color: #666;
+            font-size: 13px;
+            margin: 0 0 16px;
+        }
+        .modal-box textarea {
+            width: 100%;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .modal-box textarea:focus {
+            border-color: #DC2626;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .btn-modal-cancel {
+            background: #DC2626;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+        .btn-modal-cancel:hover { background: #B91C1C; }
+        .btn-modal-close {
+            background: var(--bg-main);
+            color: var(--text-dark);
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-modal-close:hover {
+            border-color: #DC2626;
+            color: #DC2626;
         }
     </style>
 </head>
@@ -521,8 +622,11 @@
             <a href="#" class="menu-item active">
                 <i class="fas fa-border-all"></i> Tổng quan
             </a>
-            <a href="/Foods" class="menu-item">
+            <a href="/CanteenDashboard/Foods" class="menu-item">
                 <i class="fas fa-utensils"></i> Quản lý Món ăn
+            </a>
+            <a href="/CanteenDashboard/Reviews" class="menu-item">
+                <i class="fas fa-star"></i> Đánh giá
             </a>
         </div>
 
@@ -546,17 +650,10 @@
                 <h2 class="page-title" style="color: #92400E; margin-bottom: 4px;">Chào buổi sáng, @ViewBag.CanteenName</h2>
                 <p style="color: #666; font-size: 13px; font-weight: 500; margin: 0;">@DateTime.Now.ToString("dd MMMM, yyyy")</p>
             </div>
-            <div style="display: flex; gap: 16px; align-items: center;">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Tìm kiếm đơn hàng, món ăn..." style="background: white; border: 1px solid #EAEAEA;">
-                </div>
-                <button class="add-food-btn"><i class="fas fa-plus"></i> Thêm món ăn</button>
-            </div>
         </div>
 
         <!-- Stats Cards (Clean White Style) -->
-        <div class="row g-4 mb-4">
+        <div class="row g-2 mb-4">
             <div class="col-md-3">
                 <div class="stat-card-clean">
                     <div class="stat-header">
@@ -575,7 +672,7 @@
                     <div class="stat-value">@ViewBag.PreparingOrders</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="stat-card-clean">
                     <div class="stat-header">
                         <i class="fas fa-check-circle" style="color: #10B981; font-size: 18px; margin-bottom: 8px;"></i>
@@ -584,7 +681,16 @@
                     <div class="stat-value">@ViewBag.CompletedOrders</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="stat-card-clean">
+                    <div class="stat-header">
+                        <i class="fas fa-ban" style="color: #EF4444; font-size: 18px; margin-bottom: 8px;"></i>
+                        <h3 class="stat-title">ĐÃ HỦY</h3>
+                    </div>
+                    <div class="stat-value" style="color: #DC2626;">@ViewBag.CancelledOrders</div>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="canteen-header-card">
                     <div class="stat-header">
                         <i class="fas fa-money-bill-wave" style="color: #B45309; font-size: 18px; margin-bottom: 8px;"></i>
@@ -619,17 +725,24 @@
                         <div class="order-customer">@order.Student.FullName</div>
                         <ul class="order-items">
                             @foreach(var item in order.OrderItems)
-                            {
-                                <li class="order-item">@item.Quantity x @item.Food.Name</li>
-                            }
+                            {                            <li class="order-item">@item.Quantity x @item.Food.Name
+                                @if (!string.IsNullOrEmpty(item.Note))
+                                {
+                                    <span style="display:block; font-size:11px; color:#D97706; margin-top:2px;">📝 @item.Note</span>
+                                }
+                            </li>
+                        }
                         </ul>
                         <div class="order-footer">
                             <span class="order-price">@string.Format("{0:N0}đ", order.TotalPrice)</span>
-                            <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin: 0;">
-                                <input type="hidden" name="orderId" value="@order.Id" />
-                                <input type="hidden" name="status" value="preparing" />
-                                <button type="submit" class="btn-kanban btn-accept">Nhận đơn</button>
-                            </form>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" class="btn-kanban btn-cancel" onclick="openCancelModal(@order.Id)">Từ chối</button>
+                                <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin: 0;">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <input type="hidden" name="status" value="preparing" />
+                                    <button type="submit" class="btn-kanban btn-accept">Nhận đơn</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 }
@@ -653,7 +766,12 @@
                         <ul class="order-items">
                             @foreach(var item in order.OrderItems)
                             {
-                                <li class="order-item">@item.Quantity x @item.Food.Name</li>
+                                <li class="order-item">@item.Quantity x @item.Food.Name
+                                    @if (!string.IsNullOrEmpty(item.Note))
+                                    {
+                                        <span style="display:block; font-size:11px; color:#D97706; margin-top:2px;">📝 @item.Note</span>
+                                    }
+                                </li>
                             }
                         </ul>
                         <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin-top: 16px;">
@@ -676,7 +794,40 @@
                 {
                     <div class="order-card ready-card">
                         <div class="order-card-header">
-                            <span class="order-id" style="color: #059669;">GỌI TÊN NHẬN MÓN</span>
+                            <span class="order-id" style="color: #059669;">#ORD-@order.Id</span>
+                        </div>
+                        <div class="order-customer">@order.Student.FullName</div>
+                        <ul class="order-items">
+                            @foreach(var item in order.OrderItems)
+                            {
+                                <li class="order-item">@item.Quantity x @item.Food.Name
+                                    @if (!string.IsNullOrEmpty(item.Note))
+                                    {
+                                        <span style="display:block; font-size:11px; color:#D97706; margin-top:2px;">📝 @item.Note</span>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                        <div style="margin-top: 16px; padding: 10px; background: #ECFDF5; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 600; color: #059669;">
+                            <i class="fas fa-clock"></i> Chờ khách xác nhận đã nhận
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Cột Đã hủy -->
+            <div class="kanban-column" style="background: #FFF5F5;">
+                <div class="kanban-header" style="color: #DC2626;">
+                    <div class="kanban-dot" style="background: #DC2626;"></div>
+                    Đã hủy <span class="kanban-count">@Model.Count(o => o.Status == "cancelled")</span>
+                </div>
+
+                @foreach (var order in Model.Where(o => o.Status == "cancelled"))
+                {
+                    <div class="order-card" style="border: 1px solid #FECACA; background: #FFF5F5;">
+                        <div class="order-card-header">
+                            <span class="order-id" style="color: #DC2626;">#ORD-@order.Id</span>
+                            <span class="order-time" style="background: #FEE2E2; color: #991B1B;">Đã hủy</span>
                         </div>
                         <div class="order-customer">@order.Student.FullName</div>
                         <ul class="order-items">
@@ -685,16 +836,51 @@
                                 <li class="order-item">@item.Quantity x @item.Food.Name</li>
                             }
                         </ul>
-                        <form method="post" action="/CanteenDashboard/UpdateOrderStatus" style="margin-top: 16px;">
-                            <input type="hidden" name="orderId" value="@order.Id" />
-                            <input type="hidden" name="status" value="delivered" />
-                            <button type="submit" class="btn-kanban btn-deliver"><i class="fas fa-check-circle"></i> Đã giao khách</button>
-                        </form>
+                        @if (!string.IsNullOrEmpty(order.CancelReason))
+                        {
+                            <div style="margin-top: 12px; padding: 10px; background: #FEF2F2; border-radius: 8px; font-size: 12px; color: #991B1B;">
+                                <i class="fas fa-info-circle"></i> @order.CancelReason
+                            </div>
+                        }
                     </div>
                 }
             </div>
         </div>
     </div>
+
+    <!-- Cancel Order Modal -->
+    <div class="modal-overlay" id="cancelModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-exclamation-triangle"></i> Từ chối đơn hàng</h3>
+            <p>Vui lòng nhập lý do từ chối đơn hàng này. Sinh viên sẽ nhận được thông báo kèm lý do.</p>
+            <form method="post" action="/CanteenDashboard/CancelOrder" id="cancelForm">
+                <input type="hidden" name="orderId" id="cancelOrderId" value="" />
+                <textarea name="cancelReason" placeholder="Nhập lý do từ chối (VD: Hết nguyên liệu, Hết giờ phục vụ...)" required></textarea>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-close" onclick="closeCancelModal()">
+                        <i class="fas fa-times"></i> Quay lại
+                    </button>
+                    <button type="submit" class="btn-modal-cancel">
+                        <i class="fas fa-ban"></i> Xác nhận hủy
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openCancelModal(orderId) {
+            document.getElementById('cancelOrderId').value = orderId;
+            document.getElementById('cancelModal').classList.add('show');
+        }
+        function closeCancelModal() {
+            document.getElementById('cancelModal').classList.remove('show');
+        }
+        // Close modal when clicking outside
+        document.getElementById('cancelModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCancelModal();
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

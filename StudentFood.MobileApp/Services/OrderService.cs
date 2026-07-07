@@ -72,6 +72,75 @@ public class OrderService
         }
     }
 
+    public async Task<(bool Success, string Message)> UpdateItemNoteAsync(int orderId, int orderItemId, string note)
+    {
+        try
+        {
+            var response = await HttpClient.PatchAsJsonAsync($"{ApiConfig.OrdersUrl}/{orderId}/items/{orderItemId}/note", new { note });
+            var payload = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>(JsonOptions);
+            var message = payload is not null && payload.TryGetValue("message", out var responseMessage)
+                ? responseMessage
+                : "Không thể cập nhật ghi chú.";
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return (false, message);
+            }
+
+            return (true, message);
+        }
+        catch
+        {
+            return (false, "Không kết nối được tới máy chủ.");
+        }
+    }
+
+    public async Task<(bool Success, string Message)> ConfirmDeliveryAsync(int orderId)
+    {
+        try
+        {
+            var response = await HttpClient.PostAsJsonAsync($"{ApiConfig.OrdersUrl}/{orderId}/ConfirmDelivery", new { });
+            var payload = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>(JsonOptions);
+            var message = payload is not null && payload.TryGetValue("message", out var responseMessage)
+                ? responseMessage
+                : "Không thể xác nhận.";
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return (false, message);
+            }
+
+            return (true, message);
+        }
+        catch
+        {
+            return (false, "Không kết nối được tới máy chủ.");
+        }
+    }
+
+    public async Task<(bool Success, string Message)> CancelOrderAsync(int orderId, string reason)
+    {
+        try
+        {
+            var response = await HttpClient.PostAsJsonAsync($"{ApiConfig.OrdersUrl}/{orderId}/Cancel", new { reason });
+            var payload = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>(JsonOptions);
+            var message = payload is not null && payload.TryGetValue("message", out var responseMessage)
+                ? responseMessage
+                : "Không thể hủy đơn hàng.";
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return (false, message);
+            }
+
+            return (true, message);
+        }
+        catch
+        {
+            return (false, "Không kết nối được tới máy chủ.");
+        }
+    }
+
     public async Task<(bool Success, string Message)> SubmitReviewAsync(int orderId, ReviewRequest request)
     {
         try

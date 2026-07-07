@@ -14,11 +14,11 @@ namespace StudentFood.WebAdmin.Data
             context.Database.EnsureCreated();
 
             // 1. Seed Users if not already seeded
-            if (!context.Users.Any(u => u.Username == "admin"))
+            if (!context.Users.Any(u => u.Email == "admin@studentfood.com"))
             {
                 context.Users.Add(new User
                 {
-                    Username = "admin",
+                    Email = "admin@studentfood.com",
                     Password = BCrypt.Net.BCrypt.HashPassword("123456"),
                     FullName = "Hệ thống Admin",
                     Role = "admin",
@@ -29,11 +29,11 @@ namespace StudentFood.WebAdmin.Data
                 });
             }
 
-            if (!context.Users.Any(u => u.Username == "canteen"))
+            if (!context.Users.Any(u => u.Email == "canteen@studentfood.com"))
             {
                 context.Users.Add(new User
                 {
-                    Username = "canteen",
+                    Email = "canteen@studentfood.com",
                     Password = BCrypt.Net.BCrypt.HashPassword("123456"),
                     FullName = "Nhân viên Căn tin",
                     Role = "canteen",
@@ -60,7 +60,7 @@ namespace StudentFood.WebAdmin.Data
                 {
                     context.Users.Add(new User
                     {
-                        Username = $"student{(i + 1):00}",
+                        Email = $"student{(i + 1):00}@studentfood.com",
                         Password = BCrypt.Net.BCrypt.HashPassword("123456"),
                         FullName = studentNames[i],
                         Role = "student",
@@ -79,7 +79,7 @@ namespace StudentFood.WebAdmin.Data
             {
                 canteenStaff = new User
                 {
-                    Username = "canteen_fallback",
+                    Email = "canteen_fallback@studentfood.com",
                     Password = BCrypt.Net.BCrypt.HashPassword("123456"),
                     FullName = "Nhân viên Căn tin Fallback",
                     Role = "canteen",
@@ -92,28 +92,65 @@ namespace StudentFood.WebAdmin.Data
                 context.SaveChanges();
             }
 
-            // 2. Seed Canteens - 12 Cửa Hàng Liên Kết as per mockup statistics
-            if (!context.Canteens.Any())
+            // 2. Seed unique Canteen Users and Canteens
+            var canteenConfigs = new[]
             {
-                var canteens = new List<Canteen>
-                {
-                    new Canteen { Name = "Căn tin A - Khu Trung tâm", Description = "Phục vụ cơm trưa văn phòng, sinh viên và đồ uống", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Căn tin B - Nhà B11", Description = "Phục vụ thức ăn nhanh, đồ ăn sáng và ăn nhẹ", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Căn tin C - Thư viện", Description = "Không gian yên tĩnh phục vụ cafe và bánh ngọt", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.08 },
-                    new Canteen { Name = "Mì Quảng & Phở Việt", Description = "Món nước truyền thống đậm đà bản sắc Việt", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Korean Food Station", Description = "Cơm cuộn, mì cay và tokbokki nóng hổi", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Sushi & Sashimi Corner", Description = "Ẩm thực Nhật Bản tươi ngon mỗi ngày", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.12 },
-                    new Canteen { Name = "Juice & Bakery Hub", Description = "Nước ép trái cây tươi mát và bánh mì ngọt", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.08 },
-                    new Canteen { Name = "Rice Bowl Spot", Description = "Cơm thố và cơm đĩa nóng sốt tự chọn", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Vegan Garden", Description = "Món ăn chay thanh đạm, lành mạnh cho sức khỏe", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.05 },
-                    new Canteen { Name = "Hải Sản Sinh Viên", Description = "Bún hải sản, mì xào hải sản chất lượng giá rẻ", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Tiệm Gà Rán COFER", Description = "Gà rán giòn rụm, khoai tây chiên và nước ngọt", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 },
-                    new Canteen { Name = "Lẩu Mini Tự Chọn", Description = "Lẩu ly, lẩu một người tiện lợi và thơm ngon", OwnerId = canteenStaff.Id, Status = "open", CommissionRate = 0.1 }
-                };
+                new { Email = "canteenA@studentfood.com", Name = "Căn tin A - Khu Trung tâm", Desc = "Phục vụ cơm trưa văn phòng, sinh viên và đồ uống", Rate = 0.1, Status = "open" },
+                new { Email = "canteenB@studentfood.com", Name = "Căn tin B - Nhà B11", Desc = "Phục vụ thức ăn nhanh, đồ ăn sáng và ăn nhẹ", Rate = 0.1, Status = "open" },
+                new { Email = "canteenC@studentfood.com", Name = "Căn tin C - Thư viện", Desc = "Không gian yên tĩnh phục vụ cafe và bánh ngọt", Rate = 0.08, Status = "open" },
+                new { Email = "canteen_miquang@studentfood.com", Name = "Mì Quảng & Phở Việt", Desc = "Món nước truyền thống đậm đà bản sắc Việt", Rate = 0.1, Status = "open" },
+                new { Email = "canteen_korean@studentfood.com", Name = "Korean Food Station", Desc = "Cơm cuộn, mì cay và tokbokki nóng hổi", Rate = 0.1, Status = "open" },
+                new { Email = "canteen_sushi@studentfood.com", Name = "Sushi & Sashimi Corner", Desc = "Ẩm thực Nhật Bản tươi ngon mỗi ngày", Rate = 0.12, Status = "open" },
+                new { Email = "canteen_juice@studentfood.com", Name = "Juice & Bakery Hub", Desc = "Nước ép trái cây tươi mát và bánh mì ngọt", Rate = 0.08, Status = "open" },
+                new { Email = "canteen_rice@studentfood.com", Name = "Rice Bowl Spot", Desc = "Cơm thố và cơm đĩa nóng sốt tự chọn", Rate = 0.1, Status = "open" },
+                new { Email = "canteen_vegan@studentfood.com", Name = "Vegan Garden", Desc = "Món ăn chay thanh đạm, lành mạnh cho sức khỏe", Rate = 0.05, Status = "open" },
+                new { Email = "canteen_seafood@studentfood.com", Name = "Hải Sản Sinh Viên", Desc = "Bún hải sản, mì xào hải sản chất lượng giá rẻ", Rate = 0.1, Status = "open" },
+                new { Email = "canteen_chicken@studentfood.com", Name = "Tiệm Gà Rán COFER", Desc = "Gà rán giòn rụm, khoai tây chiên và nước ngọt", Rate = 0.1, Status = "open" },
+                new { Email = "canteen_hotpot@studentfood.com", Name = "Lẩu Mini Tự Chọn", Desc = "Lẩu ly, lẩu một người tiện lợi và thơm ngon", Rate = 0.1, Status = "open" }
+            };
 
-                context.Canteens.AddRange(canteens);
-                context.SaveChanges();
+            foreach (var config in canteenConfigs)
+            {
+                // Create owner user if not exists
+                var owner = context.Users.FirstOrDefault(u => u.Email == config.Email);
+                if (owner == null)
+                {
+                    owner = new User
+                    {
+                        Email = config.Email,
+                        Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                        FullName = $"Chủ {config.Name}",
+                        Role = "canteen",
+                        PhoneNumber = "0912345678",
+                        AvatarUrl = "/img/avatar_canteen.png",
+                        Status = "active",
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    context.Users.Add(owner);
+                    context.SaveChanges(); // Save to get Id
+                }
+
+                // Check if canteen exists
+                var existingCanteen = context.Canteens.FirstOrDefault(c => c.Name == config.Name);
+                if (existingCanteen == null)
+                {
+                    var canteen = new Canteen
+                    {
+                        Name = config.Name,
+                        Description = config.Desc,
+                        OwnerId = owner.Id,
+                        Status = config.Status,
+                        CommissionRate = config.Rate
+                    };
+                    context.Canteens.Add(canteen);
+                }
+                else
+                {
+                    // Update OwnerId to the new individual user if it was previously set to fallback/shared staff
+                    existingCanteen.OwnerId = owner.Id;
+                }
             }
+            context.SaveChanges();
 
             // 3. Seed Categories
             if (!context.Categories.Any())

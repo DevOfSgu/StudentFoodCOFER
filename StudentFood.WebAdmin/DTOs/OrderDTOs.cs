@@ -31,6 +31,18 @@ public class OrderCreateRequest
     public List<OrderItemCreateRequest> Items { get; set; } = [];
 }
 
+public class CancelOrderRequest
+{
+    public string? Reason { get; set; }
+}
+
+public class UpdateNoteRequest
+{
+    [Required]
+    [StringLength(500)]
+    public string Note { get; set; } = string.Empty;
+}
+
 public class OrderReviewRequest
 {
     [Required]
@@ -47,6 +59,7 @@ public class OrderReviewRequest
 
 public class OrderItemDto
 {
+    public int Id { get; set; }
     public int OrderId { get; set; }
     public int FoodId { get; set; }
     public string FoodName { get; set; } = string.Empty;
@@ -77,6 +90,7 @@ public class OrderDto
     public bool CanReview { get; set; }
     public bool HasAnyReview { get; set; }
     public string StatusText { get; set; } = string.Empty;
+    public string? CancelReason { get; set; }
     public List<OrderItemDto> Items { get; set; } = [];
 }
 

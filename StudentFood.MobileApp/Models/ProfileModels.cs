@@ -15,8 +15,3 @@ public class UpdateProfileRequest
     public string PhoneNumber { get; set; } = string.Empty;
 }
 
-public class UpdateProfileResponse
-{
-    public string? Message { get; set; }
-    public ProfileUserInfo? User { get; set; }
-}

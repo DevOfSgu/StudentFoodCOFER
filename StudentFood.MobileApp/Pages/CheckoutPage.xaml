@@ -43,6 +43,7 @@
                                         <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
                                             <Label Text="{Binding Food.Name}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#1F1B16" MaxLines="1" LineBreakMode="TailTruncation" />
                                             <Label Text="{Binding Quantity, StringFormat='Số lượng: {0}'}" FontFamily="Roboto" FontSize="12" TextColor="#8A847E" />
+                                            <Label Text="{Binding Note}" FontFamily="Roboto" FontSize="11" TextColor="#FF8A00" LineBreakMode="TailTruncation" MaxLines="1" IsVisible="{Binding HasNote}" />
                                         </VerticalStackLayout>
 
                                         <Label Grid.Column="2" Text="{Binding DisplayTotalPrice}" FontFamily="RobotoBold" FontSize="14" FontAttributes="Bold" TextColor="#FF8A00" VerticalOptions="Center" />
@@ -160,7 +161,7 @@
                     <Label Grid.Column="1" Text="{Binding TotalDisplay}" FontFamily="RobotoBold" FontSize="24" FontAttributes="Bold" TextColor="#FF8A00" />
                 </Grid>
                 
-                <Button Text="Xác nhận đặt hàng &#xe5c8;" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="56" Clicked="OnConfirmOrderClicked" />
+                <Button Text="Xác nhận đặt hàng" FontFamily="RobotoBold" FontSize="16" FontAttributes="Bold" BackgroundColor="#FF8A00" TextColor="White" CornerRadius="16" HeightRequest="56" Clicked="OnConfirmOrderClicked" />
             </VerticalStackLayout>
         </Border>
 

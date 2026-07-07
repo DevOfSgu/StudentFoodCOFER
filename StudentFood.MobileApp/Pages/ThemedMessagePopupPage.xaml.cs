@@ -22,11 +22,12 @@ public partial class ThemedMessagePopupPage : ContentPage
         var popup = new ThemedMessagePopupPage(titleText, messageText, buttonText);
         await Shell.Current.Navigation.PushModalAsync(popup);
         await popup._closed.Task;
+        // Tắt modal sau khi task hoàn tất, tránh xung đột navigation
+        await Shell.Current.Navigation.PopModalAsync();
     }
 
-    private async void OnCloseClicked(object sender, EventArgs e)
+    private void OnCloseClicked(object sender, EventArgs e)
     {
         _closed.TrySetResult(true);
-        await Shell.Current.Navigation.PopModalAsync();
     }
 }

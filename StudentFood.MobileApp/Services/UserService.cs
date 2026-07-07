@@ -37,14 +37,31 @@ public class UserService
         try
         {
             var response = await HttpClient.PutAsJsonAsync($"{ApiConfig.UsersUrl}/{userId}", request);
-            var payload = await response.Content.ReadFromJsonAsync<UpdateProfileResponse>(JsonOptions);
+            var content = await response.Content.ReadAsStringAsync();
 
-            if (!response.IsSuccessStatusCode || payload?.User is null)
+            if (!response.IsSuccessStatusCode)
             {
-                return (false, payload?.Message ?? "Không thể lưu hồ sơ.", null);
+                // Thử parse lỗi từ API
+                try
+                {
+                    var errorObj = JsonSerializer.Deserialize<Dictionary<string, string>>(content, JsonOptions);
+                    if (errorObj != null && errorObj.TryGetValue("message", out var errorMsg))
+                    {
+                        return (false, errorMsg, null);
+                    }
+                }
+                catch { }
+                return (false, "Không thể lưu hồ sơ.", null);
             }
 
-            return (true, payload.Message ?? "Đã lưu hồ sơ.", payload.User);
+            // API trả về UserProfileDto trực tiếp (không wrapper)
+            var payload = JsonSerializer.Deserialize<ProfileUserInfo>(content, JsonOptions);
+            if (payload is null)
+            {
+                return (false, "Không thể lưu hồ sơ.", null);
+            }
+
+            return (true, "Đã lưu hồ sơ.", payload);
         }
         catch
         {
